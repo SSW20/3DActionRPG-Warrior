@@ -1,0 +1,23 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+
+#include "DataAssets/StartUpData/WarriorPlayerStartUpData.h"
+#include "AbilitySystem/WarriorAbilitySystemComponent.h"
+#include "GameplayAbilitySpec.h"
+
+void UWarriorPlayerStartUpData::GiveToAbilitySystemComponent(UWarriorAbilitySystemComponent* InWarriorASC, int32 Level)
+{
+	Super::GiveToAbilitySystemComponent(InWarriorASC, Level);
+
+	for (const FPlayerStartUpAbility& Ability : PlayerStartUpAbilities)
+	{
+		if(!Ability.WarriorAbility) continue;
+
+		FGameplayAbilitySpec AbilitySpec(Ability.WarriorAbility);
+		AbilitySpec.SourceObject = InWarriorASC->GetAvatarActor();
+		AbilitySpec.Level = Level;
+		AbilitySpec.DynamicAbilityTags.AddTag(Ability.AbilityTag);
+
+		InWarriorASC->GiveAbility(AbilitySpec);
+	}
+}
