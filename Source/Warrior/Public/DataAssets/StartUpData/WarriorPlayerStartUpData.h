@@ -10,16 +10,8 @@
 /**
  * 
  */
-USTRUCT(BlueprintType)
-struct FPlayerStartUpAbility
-{
-	GENERATED_BODY()
-	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
-	TSubclassOf<UWarriorGameplayAbility	> WarriorAbility = nullptr;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	FGameplayTag AbilityTag;
-};
+struct FWarriorWeaponAbility;
 
 UCLASS()
 class WARRIOR_API UWarriorPlayerStartUpData : public UWarriorStartUpDataBase
@@ -30,5 +22,5 @@ public:
 protected:
 	// 기본 능력들 (무기 생성...)
 	UPROPERTY(EditDefaultsOnly, Category = "StartUp", meta = (TitleProperty="AbilityTag"))
-	TArray<FPlayerStartUpAbility> PlayerStartUpAbilities;
+	TArray<FWarriorWeaponAbility> PlayerStartUpAbilities;
 };

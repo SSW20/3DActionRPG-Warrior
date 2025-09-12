@@ -8,6 +8,7 @@
 #include "WarriorPlayerWeapon.generated.h"
 
 
+struct FGameplayAbilitySpecHandle;
 /**
  * 
  */
@@ -18,4 +19,14 @@ class WARRIOR_API AWarriorPlayerWeapon : public AWarriorWeaponBase
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "WeaponData")
 	FWarriorPlayerWeaponData PlayerWeaponData;
+
+	UFUNCTION(BlueprintCallable)
+	void SetCachedWeaponAbilitySpecHandles(const TArray<FGameplayAbilitySpecHandle>& InSpecHandles);
+	
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	TArray<FGameplayAbilitySpecHandle> GetCachedWeaponAbilitySpecHandles() const;
+private:
+	TArray<FGameplayAbilitySpecHandle> CachedWeaponAbilitySpecHandles;
+	
+	
 };
