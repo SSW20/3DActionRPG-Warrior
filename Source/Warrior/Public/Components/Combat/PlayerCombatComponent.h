@@ -17,4 +17,7 @@ class WARRIOR_API UPlayerCombatComponent : public UPawnCombatComponent
 public:
 	UFUNCTION(BlueprintPure, Category = "Combat|Weapon")
 	AWarriorPlayerWeapon* GetPlayerWeaponByTag(FGameplayTag WeaponTag);
+
+	virtual void WeaponHitBegin(AActor* TargetActor) override;
+	virtual void WeaponHitEnd(AActor* TargetActor) override;
 };

@@ -30,4 +30,9 @@ namespace WarriorGameplayTags
 	
 	/* Weapon Tags */
 	UE_DEFINE_GAMEPLAY_TAG(WeaponTag_Axe, "WeaponTag.Axe")
+	UE_DEFINE_GAMEPLAY_TAG(Enemy_Weapon, "Enemy.Weapon")
+
+	/* Shared Tags */
+	UE_DEFINE_GAMEPLAY_TAG(Shared_Event_MeleeHit, "Shared.Event.MeleeHit")
+
 }

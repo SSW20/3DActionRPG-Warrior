@@ -8,6 +8,8 @@
 
 class UBoxComponent;
 
+DECLARE_DELEGATE_OneParam(FOnTargetInteractDelegate, AActor*);
+
 UCLASS()
 class WARRIOR_API AWarriorWeaponBase : public AActor
 {
@@ -16,6 +18,9 @@ class WARRIOR_API AWarriorWeaponBase : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AWarriorWeaponBase();
+
+	FOnTargetInteractDelegate OnWeaponHitBeginTarget;
+	FOnTargetInteractDelegate OnWeaponHitEndTarget;
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapons")
 	UStaticMeshComponent* WeaponMesh;
@@ -23,6 +28,19 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapons")
 	UBoxComponent* WeaponCollisionBox;
 	
+	UFUNCTION()	
+	virtual void OnComponentBeginOverlap(
+		UPrimitiveComponent* OverlappedComponent,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex,
+		bool bFromSweep,
+		const FHitResult & SweepResult);
+	
+	UFUNCTION()	
+	virtual void OnBoxCollisionEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 public:
 	FORCEINLINE UBoxComponent* GetBoxComponent() const {return WeaponCollisionBox;}
+
+
 };

@@ -34,4 +34,9 @@ UAbilitySystemComponent* AWarriorCharacterBase::GetAbilitySystemComponent() cons
 	return GetWarriorAbilitySystemComponent();
 }
 
+UPawnCombatComponent* AWarriorCharacterBase::GetPawnCombatComponent() const
+{
+	return nullptr;
+}
+
 

@@ -18,7 +18,7 @@ class WARRIOR_API UWarriorPlayerGameplayAbility : public UWarriorGameplayAbility
 	GENERATED_BODY()
 public:
 
-	// 이걸 왜 만들고 저장해놓는지 진짜 모르겠네 ;;
+	// 이걸 왜 만들고 저장해놓는지 진짜 모르겠네 ;; << 편하긴 혀
 	UFUNCTION(BlueprintPure, Category = "Warrior|Ability")
 	AWarriorPlayerCharacter* GetWarriorPlayerCharacterFromActorInfo();
 

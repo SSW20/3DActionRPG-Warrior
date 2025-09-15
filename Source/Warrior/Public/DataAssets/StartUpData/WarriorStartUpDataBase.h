@@ -6,6 +6,7 @@
 #include "Engine/DataAsset.h"
 #include "WarriorStartUpDataBase.generated.h"
 
+class UGameplayEffect;
 class UWarriorAbilitySystemComponent;
 class UWarriorGameplayAbility;
 /**
@@ -26,6 +27,9 @@ protected:
 	// 리액션 능력들 (히트 리액션 ...)
 	UPROPERTY(EditDefaultsOnly, Category = "StartUp")
 	TArray<TSubclassOf<UWarriorGameplayAbility>> ReactionAbilities;
-
+	
+	UPROPERTY(EditDefaultsOnly, Category = "StartUp")
+	TArray<TSubclassOf<UGameplayEffect>> OnGivenEffects;
+	
 	void GrantAbilities(const TArray<TSubclassOf<UWarriorGameplayAbility>>& AbilitiesToGive, UWarriorAbilitySystemComponent* InWarriorASC, int32 Level = 1);
 };
