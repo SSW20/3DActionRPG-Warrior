@@ -22,7 +22,8 @@ class WARRIOR_API UWarriorAttributeSet : public UAttributeSet
 	GENERATED_BODY()
 public:
 	UWarriorAttributeSet();
-
+	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
+	
 	UPROPERTY(BlueprintReadOnly, Category="Attribute")
 	FGameplayAttributeData CurrentHealth;	
 	ATTRIBUTE_ACCESSORS(UWarriorAttributeSet,CurrentHealth)
@@ -46,4 +47,8 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Damage")
 	FGameplayAttributeData DefensePower;
 	ATTRIBUTE_ACCESSORS(UWarriorAttributeSet,DefensePower)
+
+	UPROPERTY(BlueprintReadOnly, Category = "Damage")
+	FGameplayAttributeData Damage;
+	ATTRIBUTE_ACCESSORS(UWarriorAttributeSet,Damage)
 };

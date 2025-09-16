@@ -4,13 +4,22 @@
 #include "Components/Combat/PlayerCombatComponent.h"
 
 #include "AbilitySystemBlueprintLibrary.h"
-#include "WarriorDebugHelper.h"
 #include "WarriorGameplayTags.h"
 #include "Items/Weapons/WarriorPlayerWeapon.h"
 
-AWarriorPlayerWeapon* UPlayerCombatComponent::GetPlayerWeaponByTag(FGameplayTag WeaponTag)
+AWarriorPlayerWeapon* UPlayerCombatComponent::GetPlayerWeaponByTag(FGameplayTag WeaponTag) const
 {
 	return Cast<AWarriorPlayerWeapon>(FindWeaponByTag(WeaponTag));
+}
+
+AWarriorPlayerWeapon* UPlayerCombatComponent::GetPlayerCurrentEquippedWeapon() const
+{
+	return Cast<AWarriorPlayerWeapon>(GetCurrentEquippedWeapon());
+}
+
+float UPlayerCombatComponent::GetEquippedWeaponBaseDamage(float InLevel) const
+{
+	return GetPlayerCurrentEquippedWeapon()->PlayerWeaponData.WeaponDamage.GetValueAtLevel(InLevel);
 }
 
 void UPlayerCombatComponent::WeaponHitBegin(AActor* TargetActor)
@@ -27,9 +36,10 @@ void UPlayerCombatComponent::WeaponHitBegin(AActor* TargetActor)
 	
 	OverlappedActors.AddUnique(TargetActor);
 	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(GetOwningPawn(), WarriorGameplayTags::Shared_Event_MeleeHit, Data);
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(GetOwningPawn(), WarriorGameplayTags::Player_Event_HitPause, FGameplayEventData());
 }
 
 void UPlayerCombatComponent::WeaponHitEnd(AActor* TargetActor)
 {
-	
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(GetOwningPawn(), WarriorGameplayTags::Player_Event_HitPause, FGameplayEventData());
 }

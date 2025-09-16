@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
+#include "ScalableFloat.h"
 #include "WarriorStructType.generated.h"
 class UInputMappingContext;
 class UWarriorGameplayAbility;
@@ -35,4 +36,7 @@ struct FWarriorPlayerWeaponData
 
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
 	UInputMappingContext* WeaponContextMappingContext;
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
+	FScalableFloat WeaponDamage;
 };

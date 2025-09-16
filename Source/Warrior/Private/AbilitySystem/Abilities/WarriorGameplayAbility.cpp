@@ -2,6 +2,9 @@
 
 
 #include "AbilitySystem/Abilities/WarriorGameplayAbility.h"
+
+#include "AbilitySystemBlueprintLibrary.h"
+#include "WarriorDebugHelper.h"
 #include "AbilitySystem/WarriorAbilitySystemComponent.h"
 #include "Components/Combat/PawnCombatComponent.h"
 
@@ -38,3 +41,20 @@ UWarriorAbilitySystemComponent* UWarriorGameplayAbility::GetWarriorAbilitySystem
 {
 	return Cast<UWarriorAbilitySystemComponent>(CurrentActorInfo->AbilitySystemComponent);
 }
+
+FActiveGameplayEffectHandle UWarriorGameplayAbility::NativeApplyEffectToTarget(AActor* TargetActor,
+	const FGameplayEffectSpecHandle& SpecHandle) const
+{
+	UWarriorAbilitySystemComponent* TargetASC = Cast<UWarriorAbilitySystemComponent>(UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor));
+
+	check(TargetASC && SpecHandle.IsValid());
+	
+	return GetWarriorAbilitySystemComponent()->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data, TargetASC);
+
+}
+
+FActiveGameplayEffectHandle UWarriorGameplayAbility::BP_ApplyEffectToTarget(AActor* TargetActor, const FGameplayEffectSpecHandle& SpecHandle)
+{
+	return NativeApplyEffectToTarget(TargetActor,SpecHandle);
+}
+

@@ -6,6 +6,7 @@
 #include "Abilities/GameplayAbility.h"
 #include "WarriorGameplayAbility.generated.h"
 
+class UWarriorAbilitySystemComponent;
 class UPawnCombatComponent;
 
 UENUM(BlueprintType)
@@ -35,4 +36,10 @@ protected:
 
 	UFUNCTION(BlueprintPure, Category="Warrior|Ability")
 	UWarriorAbilitySystemComponent* GetWarriorAbilitySystemComponent() const;
+	
+	FActiveGameplayEffectHandle NativeApplyEffectToTarget(AActor* TargetActor, const FGameplayEffectSpecHandle& SpecHandle) const;
+
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Apply Effect To Target"))
+	FActiveGameplayEffectHandle BP_ApplyEffectToTarget(AActor* TargetActor, const FGameplayEffectSpecHandle& SpecHandle);
+
 };
