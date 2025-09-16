@@ -1,8 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "AbilitySystem/WarriorAttributeSet.h"
 #include "GameplayEffectExtension.h"
 #include "WarriorDebugHelper.h"
-#include "AbilitySystem/WarriorAttributeSet.h"
+#include "WarriorFunctionLibrary.h"
+#include "WarriorGameplayTags.h"
+
 
 UWarriorAttributeSet::UWarriorAttributeSet()
 {
@@ -33,7 +36,12 @@ void UWarriorAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCal
 		const float IncomingDamage = GetDamage();
 		
 		SetCurrentHealth(FMath::Clamp(GetCurrentHealth() - IncomingDamage, 0.f, GetMaxHealth()));
-		
+
 		Debug::Print("Current Target Health", GetCurrentHealth());
+	}
+
+	if (GetCurrentHealth() == 0.f)
+	{
+		UWarriorFunctionLibrary::AddGameplayTagToActorIfNone(Data.Target.GetAvatarActor(), WarriorGameplayTags::Shared_Status_Death);
 	}
 }

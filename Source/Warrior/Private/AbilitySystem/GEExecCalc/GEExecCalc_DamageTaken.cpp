@@ -115,8 +115,6 @@ void UGEExecCalc_DamageTaken::Execute_Implementation(const FGameplayEffectCustom
 		BaseDamage *=  (HeavyComboCount - 1.f) * 0.2 + 1.f;
 	}
 	float TotalDamage = BaseDamage * SourceAttackPower / TargetDefensePower;
-	
-	Debug::Print("Total Damage Amount : ", TotalDamage);
 
 	//계산된 결과를 어떻게 적용할지 설정  
 	//OutExecutionOutput은 자동으로 Target의 AbilitySystemComponent에 대한 변경 지시를 담는 '컨테이너' 역할을 함
