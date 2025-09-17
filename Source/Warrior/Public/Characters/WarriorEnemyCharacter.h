@@ -6,6 +6,8 @@
 #include "Characters/WarriorCharacterBase.h"
 #include "WarriorEnemyCharacter.generated.h"
 
+class UWidgetComponent;
+class UEnemyUIComponent;
 class UEnemyCombatComponent;
 /**
  * 
@@ -23,12 +25,25 @@ public:
 	virtual UPawnCombatComponent* GetPawnCombatComponent() const override;
 	//~ End IPawnCombatInterface
 
+	//~ Begin IPawnUIInterface.
+	virtual UPawnUIComponent* GetPawnUIComponent() const override;
+
+	virtual UEnemyUIComponent* GetEnemyUIComponent() const override;
+	//~ End IPawnUIInterface
 	
 protected:
+	virtual void BeginPlay() override;
+	
 #pragma region Component
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat", meta = (AllowPrivateAccess = "true"))
 	UEnemyCombatComponent* EnemyCombatComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+	UEnemyUIComponent* EnemyUIComponent;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+	UWidgetComponent* EnemyWidgetComponent;
 	
 #pragma endregion Component
 

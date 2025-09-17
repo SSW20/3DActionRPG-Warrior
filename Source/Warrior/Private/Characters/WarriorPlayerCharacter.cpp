@@ -12,6 +12,7 @@
 
 #include "Components/Combat/PlayerCombatComponent.h"
 #include "Components/Input/WarriorInputComponent.h"
+#include "Components/UI/PlayerUIComponent.h"
 #include "DataAssets/Input/WarriorInputConfig.h"
 #include "DataAssets/StartUpData/WarriorStartUpDataBase.h"
 
@@ -37,6 +38,8 @@ AWarriorPlayerCharacter::AWarriorPlayerCharacter()
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f; //	이동을 멈출 때 감속하는 속도를 제어
 
 	PlayerCombatComponent = CreateDefaultSubobject<UPlayerCombatComponent>("PlayerCombatComponent");
+	PlayerUIComponent = CreateDefaultSubobject<UPlayerUIComponent>("PlayerUIComponent");
+
 }
 
 void AWarriorPlayerCharacter::BeginPlay()
@@ -85,6 +88,16 @@ void AWarriorPlayerCharacter::PossessedBy(AController* NewController)
 UPawnCombatComponent* AWarriorPlayerCharacter::GetPawnCombatComponent() const
 {
 	return PlayerCombatComponent;
+}
+
+UPawnUIComponent* AWarriorPlayerCharacter::GetPawnUIComponent() const
+{
+	return PlayerUIComponent;
+}
+
+UPlayerUIComponent* AWarriorPlayerCharacter::GetPlayerUIComponent() const
+{
+	return PlayerUIComponent;
 }
 
 void AWarriorPlayerCharacter::Input_Move(const FInputActionValue& InputActionValue)

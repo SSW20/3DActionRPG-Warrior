@@ -5,8 +5,10 @@
 #include "CoreMinimal.h"
 #include "InputActionValue.h"
 #include "Characters/WarriorCharacterBase.h"
+#include "Components/UI/PawnUIComponent.h"
 #include "WarriorPlayerCharacter.generated.h"
 
+class UPlayerUIComponent;
 class UPlayerCombatComponent;
 class UWarriorInputComponent;
 class UWarriorInputConfig;
@@ -35,6 +37,12 @@ protected:
 	//~ Begin IPawnCombatInterface.
 	virtual UPawnCombatComponent* GetPawnCombatComponent() const override;
 	//~ End IPawnCombatInterface
+
+	//~ Begin IPawnUIInterface.
+	virtual UPawnUIComponent* GetPawnUIComponent() const override;
+
+	virtual UPlayerUIComponent* GetPlayerUIComponent() const override;
+	//~ End IPawnUIInterface
 private:
 #pragma region Components
 
@@ -46,6 +54,9 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat", meta = (AllowPrivateAccess = "true"))
 	UPlayerCombatComponent* PlayerCombatComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI", meta = (AllowPrivateAccess = "true"))
+	UPlayerUIComponent* PlayerUIComponent;
 #pragma endregion Components
 
 #pragma region EnhancedInput

@@ -5,6 +5,9 @@
 #include "WarriorDebugHelper.h"
 #include "WarriorFunctionLibrary.h"
 #include "WarriorGameplayTags.h"
+#include "Components/UI/PawnUIComponent.h"
+#include "Components/UI/PlayerUIComponent.h"
+#include "Interfaces/PawnUIInterface.h"
 
 
 UWarriorAttributeSet::UWarriorAttributeSet()
@@ -23,14 +26,30 @@ void UWarriorAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCal
 {
 	Super::PostGameplayEffectExecute(Data);
 
+	if (!CachedPawnUIInterface.IsValid())
+	{
+		CachedPawnUIInterface = TWeakInterfacePtr<IPawnUIInterface>(Data.Target.GetAvatarActor());
+	}
+
+	UPawnUIComponent* PawnUIComponent = CachedPawnUIInterface->GetPawnUIComponent();
+	
 	if (Data.EvaluatedData.Attribute == GetCurrentHealthAttribute())
 	{
 		SetCurrentHealth(FMath::Clamp(GetCurrentHealth(), 0.f, GetMaxHealth()));
+
+		PawnUIComponent->OnHealthChanged.Broadcast(GetCurrentHealth() / GetMaxHealth());
 	}
+	
 	if (Data.EvaluatedData.Attribute == GetCurrentRageAttribute())
 	{
 		SetCurrentRage(FMath::Clamp(GetCurrentRage(), 0.f, GetMaxRage()));
+
+		if (UPlayerUIComponent* PlayerUIComponent = CachedPawnUIInterface->GetPlayerUIComponent())
+		{
+			PlayerUIComponent->OnRageChanged.Broadcast(GetCurrentRage() / GetCurrentRage());
+		}
 	}
+	
 	if (Data.EvaluatedData.Attribute == GetDamageAttribute())
 	{
 		const float IncomingDamage = GetDamage();
@@ -38,6 +57,8 @@ void UWarriorAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCal
 		SetCurrentHealth(FMath::Clamp(GetCurrentHealth() - IncomingDamage, 0.f, GetMaxHealth()));
 
 		Debug::Print("Current Target Health", GetCurrentHealth());
+
+		PawnUIComponent->OnHealthChanged.Broadcast(GetCurrentHealth() / GetMaxHealth());
 	}
 
 	if (GetCurrentHealth() == 0.f)
