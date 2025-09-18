@@ -9,6 +9,9 @@
 /**
  * 
  */
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWeaponIconChanged, TSoftObjectPtr<UTexture2D>, WeaponIcon);
+
 UCLASS()
 class WARRIOR_API UPlayerUIComponent : public UPawnUIComponent
 {
@@ -16,4 +19,7 @@ class WARRIOR_API UPlayerUIComponent : public UPawnUIComponent
 public:
 	UPROPERTY(BlueprintAssignable)
 	FOnPercentChanged OnRageChanged;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable)
+	FOnWeaponIconChanged OnWeaponIconChanged;
 };

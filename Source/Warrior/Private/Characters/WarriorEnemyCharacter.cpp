@@ -51,7 +51,7 @@ UEnemyUIComponent* AWarriorEnemyCharacter::GetEnemyUIComponent() const
 
 void AWarriorEnemyCharacter::BeginPlay()
 {
-	// Super::BeginPlay();
+	Super::BeginPlay();
 
 	if (EnemyWidgetComponent)
 	{

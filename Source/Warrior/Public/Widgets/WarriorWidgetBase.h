@@ -22,7 +22,7 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnPlayerUIComponentInitialized"))
 	void BP_PlayerUIComponentInitialized(UPlayerUIComponent* PlayerUIComponent); 
 
-	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnPlayerUIComponentInitialized"))
+	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnEnemyUIComponentInitialized"))
 	void BP_EnemyUIComponentInitialized(UEnemyUIComponent* EnemyUIComponent); 
 	
 public:
