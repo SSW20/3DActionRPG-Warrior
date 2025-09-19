@@ -3,7 +3,7 @@
 
 #include "AnimInstances/WarriorCharacterAnimInstance.h"
 
-#include "WarriorDebugHelper.h"
+#include "KismetAnimationLibrary.h"
 #include "Characters/WarriorPlayerCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
@@ -31,4 +31,6 @@ void UWarriorCharacterAnimInstance::NativeThreadSafeUpdateAnimation(float DeltaS
 	// GetCurrentAcceleration() --> 현재 가속도 Vector로 반환
 	// SizeSquared2D --> 가속도 벡터의 크기 제곱을 반환 , Why? 제곱근 연산보다 이게 더 빠르다
 	bHasAcceleration = OwningMovementComponent->GetCurrentAcceleration().SizeSquared2D() > 0.f;
+
+	LocomotionDirection = UKismetAnimationLibrary::CalculateDirection(OwningCharacter->GetVelocity(), OwningCharacter->GetActorRotation());
 }

@@ -49,11 +49,14 @@ AWarriorEnemyController::AWarriorEnemyController(const FObjectInitializer& Objec
 
 void AWarriorEnemyController::OnEnemyPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
 {
-	if (Actor && Stimulus.WasSuccessfullySensed())
-	{
-		if (UBlackboardComponent* BlackboardComponent = GetBlackboardComponent())
+	if (UBlackboardComponent* BlackboardComponent = GetBlackboardComponent())
+	{ 
+		if (!BlackboardComponent->GetValueAsObject("TargetActor"))
 		{
-			BlackboardComponent->SetValueAsObject("TargetActor", Actor);
+			if (Actor && Stimulus.WasSuccessfullySensed())
+			{
+				BlackboardComponent->SetValueAsObject("TargetActor", Actor);
+			}
 		}
 	}
 }
@@ -66,9 +69,9 @@ ETeamAttitude::Type AWarriorEnemyController::GetTeamAttitudeTowards(const AActor
 
 	if (OtherTeamAgent && OtherPawn)
 	{
-		return OtherTeamAgent->GetGenericTeamId() != GetGenericTeamId() ? ETeamAttitude::Hostile : ETeamAttitude::Friendly;
+		return OtherTeamAgent->GetGenericTeamId() < GetGenericTeamId() ? ETeamAttitude::Hostile : ETeamAttitude::Friendly;
 	}
-	return ETeamAttitude::Neutral;
+	return ETeamAttitude::Friendly;
 }
 
 void AWarriorEnemyController::BeginPlay()

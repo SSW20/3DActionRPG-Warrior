@@ -13,5 +13,7 @@ UCLASS()
 class WARRIOR_API UEnemyCombatComponent : public UPawnCombatComponent
 {
 	GENERATED_BODY()
-	
+public:
+	virtual void WeaponHitBegin(AActor* TargetActor) override;
+	virtual void WeaponHitEnd(AActor* TargetActor) override;
 };

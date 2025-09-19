@@ -58,3 +58,4 @@ FActiveGameplayEffectHandle UWarriorGameplayAbility::BP_ApplyEffectToTarget(AAct
 	return NativeApplyEffectToTarget(TargetActor,SpecHandle);
 }
 
+

@@ -4,6 +4,8 @@
 #include "Characters/WarriorCharacterBase.h"
 #include "AbilitySystem/WarriorAbilitySystemComponent.h"
 #include "AbilitySystem/WarriorAttributeSet.h"
+#include "MotionWarpingComponent.h"
+#include "AnimInstances/WarriorCharacterAnimInstance.h"
 
 // Sets default values
 AWarriorCharacterBase::AWarriorCharacterBase()
@@ -15,6 +17,8 @@ AWarriorCharacterBase::AWarriorCharacterBase()
 
 	WarriorAbilitySystemComponent = CreateDefaultSubobject<UWarriorAbilitySystemComponent>("WarriorAbilitySystemComponent");
 	WarriorAttributeSet = CreateDefaultSubobject<UWarriorAttributeSet>("WarriorAttributeSet");
+
+	MotionWarpingComponent = CreateDefaultSubobject<UMotionWarpingComponent>("MotionWarpingComponent");
 }
 
 void AWarriorCharacterBase::PossessedBy(AController* NewController)

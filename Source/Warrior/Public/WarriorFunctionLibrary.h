@@ -7,6 +7,7 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "WarriorFunctionLibrary.generated.h"
 
+class UPawnCombatComponent;
 class UWarriorAbilitySystemComponent;
 /**
  * 
@@ -33,4 +34,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Get PawnCombatComponent From Actor"))
 	static UPawnCombatComponent* BP_GetPawnCombatComponentFromActor(AActor* InActor);
+
+	UFUNCTION(BlueprintPure)
+	static bool IsTargetHostile(APawn* OwningPawn, APawn* TargetPawn);
+	
 };

@@ -11,6 +11,7 @@
 
 class UWarriorStartUpDataBase;
 class UWarriorAttributeSet;
+class UMotionWarpingComponent;
 class UWarriorAbilitySystemComponent;
 
 UCLASS()
@@ -47,6 +48,8 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "StartUpData")
 	TSoftObjectPtr<UWarriorStartUpDataBase> CharacterStartUpData;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "MotionWarp")
+	UMotionWarpingComponent* MotionWarpingComponent;
 public:
 	FORCEINLINE UWarriorAbilitySystemComponent* GetWarriorAbilitySystemComponent() const {return WarriorAbilitySystemComponent;}
 	FORCEINLINE UWarriorAttributeSet* GetWarriorAttributeSet() const {return WarriorAttributeSet;}

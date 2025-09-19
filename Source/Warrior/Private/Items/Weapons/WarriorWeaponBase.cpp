@@ -4,6 +4,8 @@
 #include "Items/Weapons/WarriorWeaponBase.h"
 
 #include "WarriorDebugHelper.h"
+#include "WarriorFunctionLibrary.h"
+#include "AbilitySystem/WarriorAbilitySystemComponent.h"
 #include "Components/BoxComponent.h"
 
 // Sets default values
@@ -25,24 +27,23 @@ AWarriorWeaponBase::AWarriorWeaponBase()
 }
 
 void AWarriorWeaponBase::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+                                                 UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+                                                 const FHitResult& SweepResult)
 {
-	
 	APawn* WeaponOwningPawn = GetInstigator<APawn>();
-	
-	checkf(WeaponOwningPawn,TEXT("Forgot to assign an instiagtor as the owning pawn of the weapon: %s"),*GetName());
-	
+
+	checkf(WeaponOwningPawn, TEXT("Forgot to assign an instiagtor as the owning pawn of the weapon: %s"), *GetName());
+
 	if (APawn* HitPawn = Cast<APawn>(OtherActor))
 	{
-		if (WeaponOwningPawn != HitPawn)
+		if (UWarriorFunctionLibrary::IsTargetHostile(WeaponOwningPawn, HitPawn))
 		{
 			OnWeaponHitBeginTarget.ExecuteIfBound(HitPawn);
 		}
-	
-		//TODO:Implement hit check for enemy characters
 	}
-
 }
+
+
 
 void AWarriorWeaponBase::OnBoxCollisionEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
@@ -50,15 +51,14 @@ void AWarriorWeaponBase::OnBoxCollisionEndOverlap(UPrimitiveComponent* Overlappe
 	APawn* WeaponOwningPawn = GetInstigator<APawn>();
 	
 	checkf(WeaponOwningPawn,TEXT("Forgot to assign an instiagtor as the owning pawn of the weapon: %s"),*GetName());
-	
+
 	if (APawn* HitPawn = Cast<APawn>(OtherActor))
 	{
-		if (WeaponOwningPawn != HitPawn)
+		if (UWarriorFunctionLibrary::IsTargetHostile(WeaponOwningPawn, HitPawn))
+
 		{
 			OnWeaponHitEndTarget.ExecuteIfBound(HitPawn);
 		}
-	
-		//TODO:Implement hit check for enemy characters
 	}
 }
 

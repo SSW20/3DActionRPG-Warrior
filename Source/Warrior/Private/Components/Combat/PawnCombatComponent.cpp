@@ -22,7 +22,6 @@ void UPawnCombatComponent::RegisterPawnWeapon(FGameplayTag InWeaponTag, AWarrior
 
 	InWeapon->OnWeaponHitBeginTarget.BindUObject(this, &UPawnCombatComponent::WeaponHitBegin);
 	InWeapon->OnWeaponHitEndTarget.BindUObject(this, &UPawnCombatComponent::WeaponHitEnd);
-
 }
 
 AWarriorWeaponBase* UPawnCombatComponent::FindWeaponByTag(const FGameplayTag InWeaponTag) const
@@ -53,6 +52,8 @@ void UPawnCombatComponent::ToggleWeaponCollision(bool bShouldEnable, EToggleDama
 		if (bShouldEnable)
 		{
 			Weapon->GetBoxComponent()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+			// 3. Pawn 채널에 대한 응답만 Overlap으로 설정
+			Weapon->GetBoxComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
 		}
 		else
 		{
