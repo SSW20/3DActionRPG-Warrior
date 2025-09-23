@@ -4,8 +4,10 @@
 #include "WarriorFunctionLibrary.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "GenericTeamAgentInterface.h"
+#include "WarriorGameplayTags.h"
 #include "AbilitySystem/WarriorAbilitySystemComponent.h"
 #include "Interfaces/PawnCombatInterface.h"
+#include "Kismet/KismetMathLibrary.h"
 
 UWarriorAbilitySystemComponent* UWarriorFunctionLibrary::GetWarriorAbilitySystemComponentFromActor(AActor* InActor)
 {
@@ -74,4 +76,51 @@ bool UWarriorFunctionLibrary::IsTargetHostile(APawn* OwningPawn, APawn* TargetPa
 		return OwningTeamAgent->GetGenericTeamId() != TargetTeamAgent->GetGenericTeamId();
 	}
 	return false;
+}
+
+float UWarriorFunctionLibrary::GetScalableFloatByLevel(const FScalableFloat& RollingDistance, const float Level)
+{
+	return RollingDistance.GetValueAtLevel(Level);
+}
+
+FGameplayTag UWarriorFunctionLibrary::GetHitReactDirection(AActor* DamagedActor, AActor* HitActor,
+	float& OutAngle)
+{
+	const FVector DamagedForward = DamagedActor->GetActorForwardVector();
+	const FVector ToHitActorNormalized = (HitActor->GetActorLocation() - DamagedActor->GetActorLocation()).GetSafeNormal();
+
+	const float DotValue = FVector::DotProduct(DamagedForward, ToHitActorNormalized);
+	OutAngle = UKismetMathLibrary::DegAcos(DotValue);
+
+	// 기존의 벡터 외적은 오른손 법칙을 따라가지만 언리얼의 외적은 왼손을 따라감
+	// 기존 방향의 오른쪽 --> 양수 / 기존 방향의 왼쪽 --> 음수
+	const FVector CrossValue = FVector::CrossProduct(DamagedForward, ToHitActorNormalized);
+	if (CrossValue.Z  < 0.f)
+	{
+		OutAngle = -OutAngle;
+	}
+
+	if (OutAngle <= 45.f && OutAngle >= -45.f)
+	{
+		return WarriorGameplayTags::Shared_Status_HitReact_Front;
+	}
+	if (OutAngle <= 135.f && OutAngle >= 45.f)
+	{
+		return WarriorGameplayTags::Shared_Status_HitReact_Right;
+	}
+	if (OutAngle <= -135.f || OutAngle >= 135.f)
+	{
+		return WarriorGameplayTags::Shared_Status_HitReact_Back;
+	}
+	if (OutAngle <= -45.f && OutAngle >= -135.f)
+	{
+		return WarriorGameplayTags::Shared_Status_HitReact_Left;
+	}
+	return FGameplayTag();
+}
+
+bool UWarriorFunctionLibrary::IsBlocked(const AActor* Attacker,const AActor* Defender)
+{
+	const float DotVal = FVector::DotProduct(Attacker->GetActorForwardVector(), Defender->GetActorForwardVector());
+	return DotVal < -0.6f;
 }

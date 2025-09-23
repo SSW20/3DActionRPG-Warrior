@@ -7,6 +7,7 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "WarriorFunctionLibrary.generated.h"
 
+struct FScalableFloat;
 class UPawnCombatComponent;
 class UWarriorAbilitySystemComponent;
 /**
@@ -37,5 +38,12 @@ public:
 
 	UFUNCTION(BlueprintPure)
 	static bool IsTargetHostile(APawn* OwningPawn, APawn* TargetPawn);
-	
+
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Get Rolling Distance By Level"))
+	static float GetScalableFloatByLevel(const FScalableFloat& RollingDistance, const float Level);
+
+	UFUNCTION(BlueprintCallable)
+	static FGameplayTag GetHitReactDirection(AActor* DamagedActor, AActor* HitActor,float& OutAngle);
+
+	static bool IsBlocked(const AActor* Attacker,const AActor* Defender);
 };

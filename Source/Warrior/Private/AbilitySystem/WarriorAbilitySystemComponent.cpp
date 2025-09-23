@@ -4,6 +4,7 @@
 #include "AbilitySystem/WarriorAbilitySystemComponent.h"
 #include "WarriorTypes/WarriorStructType.h"
 #include "GameplayAbilitySpecHandle.h"
+#include "WarriorGameplayTags.h"
 #include "AbilitySystem/Abilities/WarriorGameplayAbility.h"
 void UWarriorAbilitySystemComponent::OnAbilityPressed(FGameplayTag InputTag)
 {
@@ -18,6 +19,16 @@ void UWarriorAbilitySystemComponent::OnAbilityPressed(FGameplayTag InputTag)
 
 void UWarriorAbilitySystemComponent::OnAbilityReleased(FGameplayTag InputTag)
 {
+	if (!InputTag.IsValid() || !InputTag.MatchesTag(WarriorGameplayTags::InputTag_Held)) return;
+
+	for (const FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	{
+		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
+			if (AbilitySpec.IsActive())
+		{
+			CancelAbilityHandle(AbilitySpec.Handle);
+		}
+	}
 }
 
 void UWarriorAbilitySystemComponent::RemovedGrantedPlayerWeaponAbilities(
