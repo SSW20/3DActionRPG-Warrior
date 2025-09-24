@@ -2,6 +2,8 @@
 
 
 #include "Characters/WarriorPlayerCharacter.h"
+
+#include "AbilitySystemBlueprintLibrary.h"
 #include "WarriorDebugHelper.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -67,6 +69,12 @@ void AWarriorPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerI
 		this, &AWarriorPlayerCharacter::Input_Move);
 	WarriorInputComponent->BindMoveInputAction(WarriorInputConfig, WarriorGameplayTags::InputTag_Look, ETriggerEvent::Triggered,
 		this, &AWarriorPlayerCharacter::Input_Look);
+	WarriorInputComponent->BindMoveInputAction(WarriorInputConfig, WarriorGameplayTags::InputTag_SwitchTarget, ETriggerEvent::Triggered,
+		this, &AWarriorPlayerCharacter::Input_SwitchTargetStart);
+	WarriorInputComponent->BindMoveInputAction(WarriorInputConfig, WarriorGameplayTags::InputTag_SwitchTarget, ETriggerEvent::Completed,
+		this, &AWarriorPlayerCharacter::Input_SwitchTargetEnd);
+	
+	
 	WarriorInputComponent->BindAbilityInputAction(WarriorInputConfig, this, &AWarriorPlayerCharacter::Input_AbilityPressed,
 		&AWarriorPlayerCharacter::Input_AbilityReleased);
 }
@@ -130,6 +138,27 @@ void AWarriorPlayerCharacter::Input_Look(const FInputActionValue& InputActionVal
 	if (MovementVector.Y != 0.f)
 	{
 		AddControllerPitchInput(-MovementVector.Y);
+	}
+}
+
+void AWarriorPlayerCharacter::Input_SwitchTargetStart(const FInputActionValue& InputActionValue)
+{
+	SwitchDirection = InputActionValue.Get<FVector2D>();
+}
+
+void AWarriorPlayerCharacter::Input_SwitchTargetEnd(const FInputActionValue& InputActionValue)
+{
+	FGameplayEventData EventData;
+	
+	if (SwitchDirection.X > 0.f)
+	{
+		EventData.EventTag = WarriorGameplayTags::Player_Event_SwitchTarget_Left;
+		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(this, WarriorGameplayTags::Player_Event_SwitchTarget_Left,EventData);
+	}
+	else
+	{
+		EventData.EventTag = WarriorGameplayTags::Player_Event_SwitchTarget_Right;
+		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(this, WarriorGameplayTags::Player_Event_SwitchTarget_Right,EventData);
 	}
 }
 

@@ -67,6 +67,11 @@ private:
 	void Input_Move(const FInputActionValue& InputActionValue);
 	void Input_Look(const FInputActionValue& InputActionValue);
 
+	void Input_SwitchTargetStart(const FInputActionValue& InputActionValue);
+	void Input_SwitchTargetEnd(const FInputActionValue& InputActionValue);
+
+	FVector2D SwitchDirection = FVector2D::ZeroVector;
+	
 	void Input_AbilityPressed(FGameplayTag InputTag);
 	void Input_AbilityReleased(FGameplayTag InputTag);
 #pragma endregion EnhancedInput

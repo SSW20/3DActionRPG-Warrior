@@ -20,6 +20,12 @@ namespace WarriorGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(InputTag_Held,"InputTag.Held")
 	UE_DEFINE_GAMEPLAY_TAG(InputTag_Held_Block,"InputTag.Held.Block")
 
+	UE_DEFINE_GAMEPLAY_TAG(InputTag_Toggle,"InputTag.Toggle")
+	UE_DEFINE_GAMEPLAY_TAG(InputTag_Toggle_TargetLock,"InputTag.Toggle.TargetLock")
+	UE_DEFINE_GAMEPLAY_TAG(InputTag_SwitchTarget, "InputTag.SwitchTarget")
+	UE_DEFINE_GAMEPLAY_TAG(Player_Event_SwitchTarget_Left,"Player.Event.SwitchTarget.Left");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Event_SwitchTarget_Right,"Player.Event.SwitchTarget.Right");
+
 	/* Player Tags */
 	UE_DEFINE_GAMEPLAY_TAG(Player_Event_EquipWeapon, "Player.Event.EquipWeapon")
 	UE_DEFINE_GAMEPLAY_TAG(Player_Event_UnEquipWeapon, "Player.Event.UnEquipWeapon")
@@ -34,11 +40,13 @@ namespace WarriorGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_HitPause, "Player.Ability.HitPause")
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Rolling, "Player.Ability.Rolling")
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Block,"Player.Ability.Block")
+	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_TargetLock,"Player.Ability.TargetLock")
 	
 
 	UE_DEFINE_GAMEPLAY_TAG(Player_Status_JumpToFinisher,"Player.Status.JumpToFinisher")
 	UE_DEFINE_GAMEPLAY_TAG(Player_Status_Rolling, "Player.Status.Rolling")
 	UE_DEFINE_GAMEPLAY_TAG(Player_Status_Block,"Player.Status.Block")
+	UE_DEFINE_GAMEPLAY_TAG(Player_Status_TargetLock,"Player.Status.TargetLock")
 
 
 
