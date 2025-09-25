@@ -18,7 +18,8 @@ public class Warrior : ModuleRules
 			"EnhancedInput",
 			"GameplayTasks", 
 			"AIModule",
-			"MotionWarping"
+			"MotionWarping",
+			"Niagara"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] { "AnimGraphRuntime" });

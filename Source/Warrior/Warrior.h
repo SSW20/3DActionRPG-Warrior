@@ -4,3 +4,5 @@
 
 #include "CoreMinimal.h"
 
+// 새로운 Object Channel 정의
+#define ECC_Projectile ECollisionChannel::ECC_GameTraceChannel1

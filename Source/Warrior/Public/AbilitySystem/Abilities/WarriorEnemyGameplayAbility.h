@@ -6,6 +6,7 @@
 #include "AbilitySystem/Abilities/WarriorGameplayAbility.h"
 #include "WarriorEnemyGameplayAbility.generated.h"
 
+class AWarriorPlayerCharacter;
 class UEnemyCombatComponent;
 class AWarriorEnemyCharacter;
 /**
@@ -25,6 +26,8 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Warrior|Ability")
 	FGameplayEffectSpecHandle MakeEnemyEffectSpecHandle(TSubclassOf<UGameplayEffect> InEffectClass,
 	FScalableFloat InEnemyDamage);
+
+	
 private:
 	TWeakObjectPtr<AWarriorEnemyCharacter> CachedWarriorEnemyCharacter;
 

@@ -39,3 +39,5 @@ FGameplayEffectSpecHandle UWarriorEnemyGameplayAbility::MakeEnemyEffectSpecHandl
 
 	return SpecHandle;
 }
+
+
