@@ -22,7 +22,7 @@ void UEnemyCombatComponent::WeaponHitBegin(AActor* TargetActor)
 	bool bIsValidBlock = false;
 
 	const bool bIsPlayerBlocking = UWarriorFunctionLibrary::NativeDoesActorHasTag(TargetActor, WarriorGameplayTags::Player_Status_Block);
-	const bool bIsEnemyAttackUnblockable = false;
+	const bool bIsEnemyAttackUnblockable = UWarriorFunctionLibrary::NativeDoesActorHasTag(GetOwningPawn(), WarriorGameplayTags::Enemy_Status_UnBlockable);
 
 	if (bIsPlayerBlocking && !bIsEnemyAttackUnblockable)
 	{

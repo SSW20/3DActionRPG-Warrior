@@ -32,8 +32,6 @@ AWarriorProjectileBase::AWarriorProjectileBase()
 	BoxComponent->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Block);
 	BoxComponent->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
 
-	
-
 	ProjectileMovementComponent->InitialSpeed = 500.f;
 	ProjectileMovementComponent->MaxSpeed = 1000.f;
 	ProjectileMovementComponent->Velocity = FVector(1.f, 0, 0);
@@ -54,8 +52,18 @@ void AWarriorProjectileBase::BeginPlay()
 	}
 }
 
+void AWarriorProjectileBase::HandleApplyProjectileDamage(AActor* OtherActor,const FGameplayEventData& Data)
+{
+	bool bApplySuccess = UWarriorFunctionLibrary::ApplyEffectSpecHandleToActor(GetInstigator(), OtherActor, DamageEffectSpecHandle);
+	if (bApplySuccess)
+	{
+		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(OtherActor,WarriorGameplayTags::Shared_Event_HitReact, Data );
+	}	
+	
+}
+
 void AWarriorProjectileBase::OnProjectileHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+                                             UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	ProjectileHit(Hit.ImpactPoint);
 	APawn* DamagedPawn = Cast<APawn>(OtherActor);
@@ -83,7 +91,7 @@ void AWarriorProjectileBase::OnProjectileHit(UPrimitiveComponent* HitComponent, 
 	}
 	else
 	{
-		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(OtherActor,WarriorGameplayTags::Shared_Event_HitReact, Data );
+		HandleApplyProjectileDamage(OtherActor, Data);
 	}
 	Destroy();
 }
@@ -91,8 +99,6 @@ void AWarriorProjectileBase::OnProjectileHit(UPrimitiveComponent* HitComponent, 
 void AWarriorProjectileBase::OnProjectileOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-
-
 	
 }
 

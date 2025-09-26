@@ -2,6 +2,9 @@
 
 
 #include "WarriorFunctionLibrary.h"
+
+#include <functional>
+
 #include "AbilitySystemBlueprintLibrary.h"
 #include "GenericTeamAgentInterface.h"
 #include "WarriorGameplayTags.h"
@@ -123,4 +126,14 @@ bool UWarriorFunctionLibrary::IsBlocked(const AActor* Attacker,const AActor* Def
 {
 	const float DotVal = FVector::DotProduct(Attacker->GetActorForwardVector(), Defender->GetActorForwardVector());
 	return DotVal < -0.6f;
+}
+
+bool UWarriorFunctionLibrary::ApplyEffectSpecHandleToActor(AActor* ThisActor, AActor* OtherActor,
+	const FGameplayEffectSpecHandle& SpecHandle)
+{
+	UWarriorAbilitySystemComponent* ThisASC = GetWarriorAbilitySystemComponentFromActor(ThisActor);
+	UWarriorAbilitySystemComponent* OtherASC = GetWarriorAbilitySystemComponentFromActor(OtherActor);
+	
+	FActiveGameplayEffectHandle ActiveSpecHandle = ThisASC->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data, OtherASC);
+	return ActiveSpecHandle.WasSuccessfullyApplied();
 }

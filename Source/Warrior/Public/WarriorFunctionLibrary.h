@@ -7,6 +7,8 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "WarriorFunctionLibrary.generated.h"
 
+struct FGameplayEffectSpecHandle;
+struct FGameplayAbilitySpecHandle;
 struct FScalableFloat;
 class UPawnCombatComponent;
 class UWarriorAbilitySystemComponent;
@@ -46,4 +48,8 @@ public:
 	static FGameplayTag GetHitReactDirection(AActor* DamagedActor, AActor* HitActor,float& OutAngle);
 
 	static bool IsBlocked(const AActor* Attacker,const AActor* Defender);
+
+	UFUNCTION()
+	static bool ApplyEffectSpecHandleToActor(AActor* ThisActor, AActor* OtherActor,
+	const FGameplayEffectSpecHandle& SpecHandle);
 };
