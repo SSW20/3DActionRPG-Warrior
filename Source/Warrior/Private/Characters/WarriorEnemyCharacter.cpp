@@ -53,7 +53,7 @@ void AWarriorEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (EnemyWidgetComponent)
+	if (EnemyWidgetComponent->GetWidget())
 	{
 		Cast<UWarriorWidgetBase>(EnemyWidgetComponent->GetWidget())->InitEnemyWidget(this);
 	}
