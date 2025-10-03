@@ -5,6 +5,7 @@
 
 #include "AbilitySystemBlueprintLibrary.h"
 #include "EnhancedInputSubsystems.h"
+#include "WarriorDebugHelper.h"
 #include "WarriorFunctionLibrary.h"
 #include "WarriorGameplayTags.h"
 #include "Blueprint/UserWidget.h"
@@ -23,6 +24,7 @@ void UPlayerGameplayAbility_TargetLock::ActivateAbility(const FGameplayAbilitySp
                                                         const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
                                                         const FGameplayEventData* TriggerEventData)
 {
+	
 	TryLockOnTarget();
 	InitCharacterWalkSpeed();
 	InitMappingContext();
@@ -76,7 +78,7 @@ void UPlayerGameplayAbility_TargetLock::GetAvailableTargetsToLock()
 		{
 			if (AActor* Actor = HitResult.GetActor())
 			{
-				if (Actor != GetWarriorPlayerCharacterFromActorInfo())
+				if (Actor != GetWarriorPlayerCharacterFromActorInfo() && !UWarriorFunctionLibrary::NativeDoesActorHasTag(Actor, WarriorGameplayTags::Shared_Status_Death))
 				{
 					FoundTargets.AddUnique(Actor);
 				}
@@ -174,12 +176,14 @@ void UPlayerGameplayAbility_TargetLock::SetTargetLockWidgetPosition()
 
 void UPlayerGameplayAbility_TargetLock::InitCharacterWalkSpeed()
 {
+	if (CurrentNearestTarget == nullptr) return;
 	CachedMaxWalkSpeed = GetWarriorPlayerCharacterFromActorInfo()->GetCharacterMovement()->MaxWalkSpeed;
 	GetWarriorPlayerCharacterFromActorInfo()->GetCharacterMovement()->MaxWalkSpeed = TargetLockWalkSpeed;
 }
 
 void UPlayerGameplayAbility_TargetLock::InitMappingContext()
 {
+	if (CurrentNearestTarget == nullptr) return;
 	UEnhancedInputLocalPlayerSubsystem* Subsystem = GetWarriorPlayerControllerFromActorInfo()->GetLocalPlayer()->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
 	check(Subsystem);
 
@@ -235,6 +239,7 @@ void UPlayerGameplayAbility_TargetLock::UpdateTargetLockWidgetPosition(float Del
 	if (UWarriorFunctionLibrary::NativeDoesActorHasTag(CurrentNearestTarget, WarriorGameplayTags::Shared_Status_Death))
 	{
 		FindOtherTarget();
+		return;
 	}
 	else 
 	{

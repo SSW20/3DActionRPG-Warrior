@@ -6,6 +6,7 @@
 #include "Characters/WarriorCharacterBase.h"
 #include "WarriorEnemyCharacter.generated.h"
 
+class UBoxComponent;
 class UWidgetComponent;
 class UEnemyUIComponent;
 class UEnemyCombatComponent;
@@ -20,7 +21,9 @@ public:
 	AWarriorEnemyCharacter();
 
 	FORCEINLINE UEnemyCombatComponent* GetEnemyCombatComponent() const {return EnemyCombatComponent;};
-
+	FORCEINLINE UBoxComponent* GetLeftHandBoxComponent() const {return LeftHandCollisionBox;}
+	FORCEINLINE UBoxComponent* GetRightHandBoxComponent() const {return RightHandCollisionBox;}
+	
 	//~ Begin IPawnCombatInterface.
 	virtual UPawnCombatComponent* GetPawnCombatComponent() const override;
 	//~ End IPawnCombatInterface
@@ -44,6 +47,22 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Combat", meta = (AllowPrivateAccess = "true"))
 	UWidgetComponent* EnemyWidgetComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+	UBoxComponent* LeftHandCollisionBox;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+	UBoxComponent* RightHandCollisionBox;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Combat")
+	FName LeftHandCollisionBoxBoneName;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Combat")
+	FName RightHandCollisionBoxBoneName;
+
+	UFUNCTION()
+	virtual void OnHandCollisionBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent,
+		AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	
 #pragma endregion Component
 
@@ -52,4 +71,11 @@ protected:
 	//~ End APawn Interface
 
 	void InitAbiliities();
+	
+#if WITH_EDITOR
+	// 프로퍼티 수정 시 호출되는 함수
+	//~ Begin UObject Interface.
+	virtual void PostEditChangeProperty(struct FPropertyChangedEvent& PropertyChangedEvent) override;
+	//~ End UObject Interface
+#endif
 };

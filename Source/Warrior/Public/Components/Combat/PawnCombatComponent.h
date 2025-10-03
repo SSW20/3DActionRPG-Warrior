@@ -37,10 +37,12 @@ public:
 	AWarriorWeaponBase* GetCurrentEquippedWeapon() const;
 
 	UFUNCTION(BlueprintCallable, Category = "Combat")
-	void ToggleWeaponCollision(bool bShouldEnable, EToggleDamageType Type = EToggleDamageType::Weapon);
+	void ToggleCollision(bool bShouldEnable, EToggleDamageType Type = EToggleDamageType::Weapon);
 
 	virtual void WeaponHitBegin(AActor* TargetActor);
 	virtual void WeaponHitEnd(AActor* TargetActor);
+	virtual void ToggleEquippedWeaponCollision(bool bShouldEnable);
+	virtual void ToggleBodyCollision(bool bShouldEnable,EToggleDamageType Type);
 
 private:
 	TMap<FGameplayTag, AWarriorWeaponBase*> CharacterWeaponsMap;

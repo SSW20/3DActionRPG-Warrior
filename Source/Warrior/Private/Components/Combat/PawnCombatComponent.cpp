@@ -40,28 +40,19 @@ AWarriorWeaponBase* UPawnCombatComponent::GetCurrentEquippedWeapon() const
 	return FindWeaponByTag(CurrentEquippedWeaponTag);
 }
 
-void UPawnCombatComponent::ToggleWeaponCollision(bool bShouldEnable, EToggleDamageType Type)
+void UPawnCombatComponent::ToggleCollision(bool bShouldEnable, EToggleDamageType Type)
 {
-	AWarriorWeaponBase* Weapon = GetCurrentEquippedWeapon();
-	if (Weapon == nullptr)
-	{
-		Debug::Print("Weapon is null");
-	}
+	
 	if (Type == EToggleDamageType::Weapon)
 	{
-		if (bShouldEnable)
-		{
-			Weapon->GetBoxComponent()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-			// 3. Pawn 채널에 대한 응답만 Overlap으로 설정
-			Weapon->GetBoxComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
-		}
-		else
-		{
-			Weapon->GetBoxComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-			OverlappedActors.Empty();
-		}
+		ToggleEquippedWeaponCollision(bShouldEnable);
 	}
-	// TODO : 바디 콜리전 설정도 해야됨
+	else
+	{
+		// TODO : 바디 콜리전 설정도 해야됨
+		ToggleBodyCollision(bShouldEnable, Type);
+	}
+	
 }
 
 void UPawnCombatComponent::WeaponHitBegin(AActor* TargetActor)
@@ -71,3 +62,29 @@ void UPawnCombatComponent::WeaponHitBegin(AActor* TargetActor)
 void UPawnCombatComponent::WeaponHitEnd(AActor* TargetActor)
 {
 }
+
+void UPawnCombatComponent::ToggleEquippedWeaponCollision(bool bShouldEnable)
+{
+	AWarriorWeaponBase* Weapon = GetCurrentEquippedWeapon();
+	if (Weapon == nullptr)
+	{
+		Debug::Print("Weapon is null");
+	}
+	if (bShouldEnable)
+	{
+		Weapon->GetBoxComponent()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+		// 3. Pawn 채널에 대한 응답만 Overlap으로 설정
+		Weapon->GetBoxComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
+	}
+	else
+	{
+		Weapon->GetBoxComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		OverlappedActors.Empty();
+	}
+}
+
+void UPawnCombatComponent::ToggleBodyCollision(bool bShouldEnable, EToggleDamageType Type)
+{
+}
+
+

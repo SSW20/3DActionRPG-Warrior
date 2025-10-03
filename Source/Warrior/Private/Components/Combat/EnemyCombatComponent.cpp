@@ -8,6 +8,8 @@
 #include "WarriorFunctionLibrary.h"
 #include "WarriorGameplayTags.h"
 #include "Abilities/GameplayAbilityTypes.h"
+#include "Characters/WarriorEnemyCharacter.h"
+#include "Components/BoxComponent.h"
 
 void UEnemyCombatComponent::WeaponHitBegin(AActor* TargetActor)
 {
@@ -52,4 +54,38 @@ void UEnemyCombatComponent::WeaponHitBegin(AActor* TargetActor)
 void UEnemyCombatComponent::WeaponHitEnd(AActor* TargetActor)
 {
 	
+}
+
+void UEnemyCombatComponent::ToggleBodyCollision(bool bShouldEnable, EToggleDamageType Type)
+{
+	AWarriorEnemyCharacter* Owner = Cast<AWarriorEnemyCharacter>(GetOwningPawn());
+	check(Owner);
+	if (Type == EToggleDamageType::LeftHand)
+	{
+		if (bShouldEnable)
+		{
+			Owner->GetLeftHandBoxComponent()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+			// 3. Pawn 채널에 대한 응답만 Overlap으로 설정
+			Owner->GetLeftHandBoxComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
+		}
+		else
+		{
+			Owner->GetLeftHandBoxComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			OverlappedActors.Empty();
+		}
+	}
+	if (Type == EToggleDamageType::RightHand)
+	{
+		if (bShouldEnable)
+		{
+			Owner->GetRightHandBoxComponent()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+			// 3. Pawn 채널에 대한 응답만 Overlap으로 설정
+			Owner->GetRightHandBoxComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
+		}
+		else
+		{
+			Owner->GetRightHandBoxComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			OverlappedActors.Empty();
+		}
+	}
 }
