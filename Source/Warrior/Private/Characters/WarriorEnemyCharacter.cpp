@@ -121,8 +121,6 @@ void AWarriorEnemyCharacter::InitAbiliities()
 				if (UWarriorStartUpDataBase* StartupData = CharacterStartUpData.Get())
 				{
 					StartupData->GiveToAbilitySystemComponent(GetWarriorAbilitySystemComponent(), 1);
-
-					Debug::Print(FString("Successful Asynchronous Loaded!"));
 				}
 			}));
 }
