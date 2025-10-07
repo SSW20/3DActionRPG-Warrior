@@ -24,6 +24,19 @@ struct FWarriorWeaponAbility
 };
 
 USTRUCT(BlueprintType)
+struct FWarriorHeroSpecialAbilitySet : public FWarriorWeaponAbility
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TSoftObjectPtr<UMaterialInterface> AbilityIconMaterial;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (Categories = "Player.Cooldown"))
+	FGameplayTag AbilityCooldownTag;
+};
+
+
+USTRUCT(BlueprintType)
 struct FWarriorPlayerWeaponData
 {
 	GENERATED_BODY()
@@ -33,6 +46,9 @@ struct FWarriorPlayerWeaponData
 
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
 	TArray<FWarriorWeaponAbility> WeaponAbilitySet;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (TitleProperty = "InputTag"))
+	TArray<FWarriorHeroSpecialAbilitySet> SpecialWeaponAbilities;
 
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
 	UInputMappingContext* WeaponContextMappingContext;

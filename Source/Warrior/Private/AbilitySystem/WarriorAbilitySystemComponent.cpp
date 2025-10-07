@@ -69,7 +69,7 @@ bool UWarriorAbilitySystemComponent::TryActivateAbilityByTag(const FGameplayTag 
 	return false;
 }
 
-void UWarriorAbilitySystemComponent::GrantWeaponAbilities(const TArray<FWarriorWeaponAbility>& Abilities,
+void UWarriorAbilitySystemComponent::GrantWeaponAbilities(const TArray<FWarriorWeaponAbility>& Abilities,const TArray<FWarriorHeroSpecialAbilitySet>& SpecialWeaponAbilities,
                                                           TArray<FGameplayAbilitySpecHandle>& OutGrantedAbilitySpecHandles, int32 AbilityLevel)
 {
 	if (Abilities.Num() > 0)
@@ -85,7 +85,17 @@ void UWarriorAbilitySystemComponent::GrantWeaponAbilities(const TArray<FWarriorW
 
 			OutGrantedAbilitySpecHandles.AddUnique(AbilitySpec.Handle);
 		}
-		
+		for (const FWarriorWeaponAbility& SpecialAbility : SpecialWeaponAbilities)
+		{
+			FGameplayAbilitySpec AbilitySpec(SpecialAbility.WarriorAbility);
+			AbilitySpec.SourceObject = GetAvatarActor();
+			AbilitySpec.Level = AbilityLevel;
+			AbilitySpec.DynamicAbilityTags.AddTag(SpecialAbility.InputTag);
+
+			GiveAbility(AbilitySpec);
+
+			OutGrantedAbilitySpecHandles.AddUnique(AbilitySpec.Handle);
+		}
 	}
 }
 

@@ -137,3 +137,9 @@ bool UWarriorFunctionLibrary::ApplyEffectSpecHandleToActor(AActor* ThisActor, AA
 	FActiveGameplayEffectHandle ActiveSpecHandle = ThisASC->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data, OtherASC);
 	return ActiveSpecHandle.WasSuccessfullyApplied();
 }
+
+void UWarriorFunctionLibrary::CountDown(const UObject* WorldContextObject, float TotalTime, float UpdateInterval,
+	float& OutRemainingTime, EWarriorCountDownActionInput CountDownInput,
+	EWarriorCountDownActionOutput& CountDownOutput, FLatentActionInfo LatentInfo)
+{
+}

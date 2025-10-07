@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
+#include "WarriorTypes/WarriorEnumTypes.h"
 #include "WarriorFunctionLibrary.generated.h"
 
 struct FGameplayEffectSpecHandle;
@@ -50,6 +51,12 @@ public:
 	static bool IsBlocked(const AActor* Attacker,const AActor* Defender);
 
 	UFUNCTION()
-	static bool ApplyEffectSpecHandleToActor(AActor* ThisActor, AActor* OtherActor,
-	const FGameplayEffectSpecHandle& SpecHandle);
+	static bool ApplyEffectSpecHandleToActor(AActor* ThisActor, AActor* OtherActor,const FGameplayEffectSpecHandle& SpecHandle);
+
+	// Custom Latent 뼈대 만들기
+	// ExpandEnumAsExecs == enum 블루프린트 노드에서 **여러 개의 개별적인 실행 핀(Execution Pins, Exec Pins)으로 자동으로 확장하도록 언리얼 엔진에게 지시하는 역할
+	UFUNCTION(BlueprintCallable, meta =(Latent, WorldContext="WorldContextObject", LatentInfo="LatentInfo",
+		ExpandEnumAsExecs = "CountDownInput|CountDownOutput", TotalTime = "1.0", UpdateInterval = "0.1"))
+	static void CountDown(const UObject* WorldContextObject, float TotalTime, float UpdateInterval, float& OutRemainingTime,
+		EWarriorCountDownActionInput CountDownInput, EWarriorCountDownActionOutput& CountDownOutput, FLatentActionInfo LatentInfo);
 };
