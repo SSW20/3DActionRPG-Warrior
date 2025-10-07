@@ -32,6 +32,8 @@ AWarriorProjectileBase::AWarriorProjectileBase()
 	BoxComponent->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Block);
 	BoxComponent->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
 
+	
+
 	ProjectileMovementComponent->InitialSpeed = 500.f;
 	ProjectileMovementComponent->MaxSpeed = 1000.f;
 	ProjectileMovementComponent->Velocity = FVector(1.f, 0, 0);
@@ -99,7 +101,24 @@ void AWarriorProjectileBase::OnProjectileHit(UPrimitiveComponent* HitComponent, 
 void AWarriorProjectileBase::OnProjectileOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	
+	if (OverlappedActors.Contains(OtherActor))
+	{
+		return;
+	}
+
+	OverlappedActors.AddUnique(OtherActor);
+
+	if (APawn* HitPawn = Cast<APawn>(OtherActor))
+	{	
+		FGameplayEventData Data;
+		Data.Instigator = GetInstigator();
+		Data.Target = HitPawn;
+
+		if (UWarriorFunctionLibrary::IsTargetHostile(GetInstigator(),HitPawn))
+		{
+			HandleApplyProjectileDamage(HitPawn,Data);
+		}
+	}
 }
 
 

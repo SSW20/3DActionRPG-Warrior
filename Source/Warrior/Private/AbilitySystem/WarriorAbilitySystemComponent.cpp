@@ -12,10 +12,9 @@ void UWarriorAbilitySystemComponent::OnAbilityPressed(FGameplayTag InputTag)
 	{
 		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
 		{
-			if (InputTag.MatchesTag(WarriorGameplayTags::InputTag_Toggle))
+			if (InputTag.MatchesTag(WarriorGameplayTags::InputTag_Toggle) && AbilitySpec.IsActive())
 			{
-				if (AbilitySpec.IsActive()) CancelAbilityHandle(AbilitySpec.Handle);
-				else TryActivateAbility(AbilitySpec.Handle);
+				CancelAbilityHandle(AbilitySpec.Handle);
 			}
 			else
 			{

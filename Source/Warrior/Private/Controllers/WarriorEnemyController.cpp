@@ -98,6 +98,5 @@ void AWarriorEnemyController::BeginPlay()
 		PathComp->SetAvoidanceGroup(1);
 		PathComp->SetGroupsToAvoid(1);
 		PathComp->SetCrowdCollisionQueryRange(DetourAvoidanceRange);
-		PathComp->Set
 	}
 }

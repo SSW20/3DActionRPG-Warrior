@@ -41,12 +41,15 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
+	// Detour 기반의 군중 회피 시스템을 사용할지 여부를 결정하는 변수
 	UPROPERTY(EditDefaultsOnly , Category = "Detour Crowd Avoidance Config")
 	bool bEnableDetourAvoidance = true;
 
+	// 군중 회피 알고리즘의 정확도와 성능의 균형을 조절하는 변수
 	UPROPERTY(EditDefaultsOnly , Category = "Detour Crowd Avoidance Config", meta = (EditCondition = "bEnableDetourAvoidance", UIMIN = "1", UIMAX = "4"))
 	int32 DetourAvoidanceQuality = 4;
 
+	//다른 객체를 인지하고 회피 기동을 시작하는 최대 거리를 설정
 	UPROPERTY(EditDefaultsOnly , Category = "Detour Crowd Avoidance Config", meta = (EditCondition = "bEnableDetourAvoidance"))
 	float DetourAvoidanceRange = 600.f;
 };	 

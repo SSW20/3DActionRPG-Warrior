@@ -42,11 +42,26 @@ void UWarriorAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCal
 	
 	if (Data.EvaluatedData.Attribute == GetCurrentRageAttribute())
 	{
+		float LocalRage = GetCurrentRage();
 		SetCurrentRage(FMath::Clamp(GetCurrentRage(), 0.f, GetMaxRage()));
 
+		if (LocalRage == GetMaxRage())
+		{
+			UWarriorFunctionLibrary::AddGameplayTagToActorIfNone(GetOwningActor(), WarriorGameplayTags::Player_Status_Rage_Full);
+		}
+		else if (LocalRage == 0.f)
+		{
+			UWarriorFunctionLibrary::AddGameplayTagToActorIfNone(GetOwningActor(), WarriorGameplayTags::Player_Status_Rage_None);
+		}
+		else
+		{
+			UWarriorFunctionLibrary::RemoveGameplayTagFromActorIfFound(GetOwningActor(), WarriorGameplayTags::Player_Status_Rage_Full);
+			UWarriorFunctionLibrary::RemoveGameplayTagFromActorIfFound(GetOwningActor(), WarriorGameplayTags::Player_Status_Rage_None);
+		}
+		
 		if (UPlayerUIComponent* PlayerUIComponent = CachedPawnUIInterface->GetPlayerUIComponent())
 		{
-			PlayerUIComponent->OnRageChanged.Broadcast(GetCurrentRage() / GetCurrentRage());
+			PlayerUIComponent->OnRageChanged.Broadcast(GetCurrentRage() / GetMaxRage());
 		}
 	}
 	
@@ -55,8 +70,6 @@ void UWarriorAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCal
 		const float IncomingDamage = GetDamage();
 		
 		SetCurrentHealth(FMath::Clamp(GetCurrentHealth() - IncomingDamage, 0.f, GetMaxHealth()));
-
-		Debug::Print("Current Target Health", GetCurrentHealth());
 
 		PawnUIComponent->OnHealthChanged.Broadcast(GetCurrentHealth() / GetMaxHealth());
 	}
