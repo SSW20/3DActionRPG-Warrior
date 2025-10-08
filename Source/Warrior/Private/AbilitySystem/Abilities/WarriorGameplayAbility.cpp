@@ -5,6 +5,8 @@
 
 #include "AbilitySystemBlueprintLibrary.h"
 #include "WarriorDebugHelper.h"
+#include "WarriorFunctionLibrary.h"
+#include "WarriorGameplayTags.h"
 #include "AbilitySystem/WarriorAbilitySystemComponent.h"
 #include "Components/Combat/PawnCombatComponent.h"
 
@@ -56,6 +58,30 @@ FActiveGameplayEffectHandle UWarriorGameplayAbility::NativeApplyEffectToTarget(A
 FActiveGameplayEffectHandle UWarriorGameplayAbility::BP_ApplyEffectToTarget(AActor* TargetActor, const FGameplayEffectSpecHandle& SpecHandle)
 {
 	return NativeApplyEffectToTarget(TargetActor,SpecHandle);
+}
+
+void UWarriorGameplayAbility::ApplyEffectToTargetsByHitResults(const TArray<FHitResult>& HitResults,
+	const FGameplayEffectSpecHandle& SpecHandle)	
+{
+
+	APawn* OwningPawn = Cast<APawn>(GetAvatarActorFromActorInfo());
+	
+	if (HitResults.Num() > 0)
+	{
+		for (const FHitResult& HitResult : HitResults)
+		{
+			if(APawn* HitPawn = Cast<APawn>(HitResult.GetActor()))
+			{
+				if (UWarriorFunctionLibrary::IsTargetHostile(OwningPawn, HitPawn))
+				{
+					NativeApplyEffectToTarget(HitPawn, SpecHandle);
+					FGameplayEventData PayLoad;
+					PayLoad.Instigator = OwningPawn;
+					UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(HitPawn, WarriorGameplayTags::Shared_Event_HitReact, PayLoad);
+				}
+			}	
+		}
+	}
 }
 
 

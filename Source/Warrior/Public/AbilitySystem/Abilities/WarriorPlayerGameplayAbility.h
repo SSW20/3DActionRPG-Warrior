@@ -32,6 +32,8 @@ public:
 	FGameplayEffectSpecHandle MakePlayerEffectSpecHandle(TSubclassOf<UGameplayEffect> InEffectClass,
 	float InWeaponBaseDamage, FGameplayTag InCurrentAttackTypeTag, int32 InCurrentComboCount);
 
+	UFUNCTION(BlueprintCallable, Category = "Warrior|Ability")
+	bool GetAbilityCoolDownTimeByTag(float& TotalTime, float& RemainingTime, FGameplayTag CoolDownTag);
 private:
 	TWeakObjectPtr<AWarriorPlayerCharacter> CachedWarriorPlayerCharacter;
 	TWeakObjectPtr<AWarriorPlayerController> CachedWarriorPlayerController;

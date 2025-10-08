@@ -55,3 +55,19 @@ FGameplayEffectSpecHandle UWarriorPlayerGameplayAbility::MakePlayerEffectSpecHan
 	return nullptr;
 }
 
+bool UWarriorPlayerGameplayAbility::GetAbilityCoolDownTimeByTag(float& TotalTime, float& RemainingTime,
+	FGameplayTag CoolDownTag)
+{
+	check(CoolDownTag.IsValid());
+	FGameplayEffectQuery CoolDownQuery = FGameplayEffectQuery::MakeQuery_MatchAnyOwningTags(CoolDownTag.GetSingleTagContainer());
+	TArray<TPair<float,float>> TimePair = GetAbilitySystemComponentFromActorInfo()->GetActiveEffectsTimeRemainingAndDuration(CoolDownQuery);
+
+	if (TimePair.Num() > 0)
+	{
+		RemainingTime = TimePair[0].Key;
+		TotalTime = TimePair[0].Value;
+	}
+
+	return RemainingTime > 0.f;
+}
+

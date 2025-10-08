@@ -9,9 +9,11 @@ enum class EWarriorCountDownActionOutput : uint8;
 class FWarriorCountDownAction : public FPendingLatentAction
 {
 public:
-	FWarriorCountDownAction(float InTotalCountTime,float InUpdateInterval,float& InOutRemainingTime,EWarriorCountDownActionOutput& InCountDownOutput,const FLatentActionInfo& LatentInfo)
+	FWarriorCountDownAction(float InTotalCountTime,float InUpdateInterval,float& InOutRemainingTime,EWarriorCountDownActionOutput& InCountDownOutput,
+		const FLatentActionInfo& LatentInfo)
 	: bNeedCancel(false)
 	, TotalCountDownTime(InTotalCountTime)
+	, UpdateInterval(InUpdateInterval)
 	, OutRemainingTime(InOutRemainingTime)
 	, CountDownOutput(InCountDownOutput)
 	, ExecutionFunction(LatentInfo.ExecutionFunction)
@@ -20,7 +22,9 @@ public:
 	, ElapsedInterval(0.f)
 	, ElapsedTimeSinceStart(0.f)
 	{}
-	
+	void CancelAction();
+
+	virtual void UpdateOperation(FLatentResponse& Response) override;
 private:
 	bool bNeedCancel;
 	float TotalCountDownTime;

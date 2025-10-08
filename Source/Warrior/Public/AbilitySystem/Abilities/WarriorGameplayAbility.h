@@ -41,4 +41,8 @@ protected:
 
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Apply Effect To Target"))
 	FActiveGameplayEffectHandle BP_ApplyEffectToTarget(AActor* TargetActor, const FGameplayEffectSpecHandle& SpecHandle);
+
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Apply Effect To Targets By AOE"))
+	void ApplyEffectToTargetsByHitResults(const TArray<FHitResult>& HitResults, const FGameplayEffectSpecHandle& SpecHandle);
+
 };
