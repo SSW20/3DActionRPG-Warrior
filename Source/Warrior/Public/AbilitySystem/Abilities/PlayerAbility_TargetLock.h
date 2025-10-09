@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystem/Abilities/WarriorPlayerGameplayAbility.h"
-#include "PlayerGameplayAbility_TargetLock.generated.h"
+#include "PlayerAbility_TargetLock.generated.h"
 
 class UInputMappingContext;
 class UWarriorWidgetBase;
@@ -12,7 +12,7 @@ class UWarriorWidgetBase;
  * 
  */
 UCLASS()
-class WARRIOR_API UPlayerGameplayAbility_TargetLock : public UWarriorPlayerGameplayAbility
+class WARRIOR_API UPlayerAbility_TargetLock : public UWarriorPlayerGameplayAbility
 {
 	GENERATED_BODY()
 public:

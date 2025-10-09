@@ -73,6 +73,8 @@ void AWarriorPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerI
 		this, &AWarriorPlayerCharacter::Input_SwitchTargetStart);
 	WarriorInputComponent->BindMoveInputAction(WarriorInputConfig, WarriorGameplayTags::InputTag_SwitchTarget, ETriggerEvent::Completed,
 		this, &AWarriorPlayerCharacter::Input_SwitchTargetEnd);
+	WarriorInputComponent->BindMoveInputAction(WarriorInputConfig, WarriorGameplayTags::InputTag_PickUp_Stone, ETriggerEvent::Triggered,
+		this, &AWarriorPlayerCharacter::Input_PickUpStoneStart);
 	
 	
 	WarriorInputComponent->BindAbilityInputAction(WarriorInputConfig, this, &AWarriorPlayerCharacter::Input_AbilityPressed,
@@ -160,6 +162,13 @@ void AWarriorPlayerCharacter::Input_SwitchTargetEnd(const FInputActionValue& Inp
 		EventData.EventTag = WarriorGameplayTags::Player_Event_SwitchTarget_Right;
 		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(this, WarriorGameplayTags::Player_Event_SwitchTarget_Right,EventData);
 	}
+}
+
+void AWarriorPlayerCharacter::Input_PickUpStoneStart(const FInputActionValue& InputActionValue)
+{
+	FGameplayEventData EventData;
+	EventData.Instigator = this;
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(this, WarriorGameplayTags::Player_Event_PickUp_Stone, EventData);
 }
 
 void AWarriorPlayerCharacter::Input_AbilityPressed(FGameplayTag InputTag)

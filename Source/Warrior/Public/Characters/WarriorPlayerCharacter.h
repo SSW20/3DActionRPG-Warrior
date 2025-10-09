@@ -70,6 +70,10 @@ private:
 	void Input_SwitchTargetStart(const FInputActionValue& InputActionValue);
 	void Input_SwitchTargetEnd(const FInputActionValue& InputActionValue);
 
+	void Input_PickUpStoneStart(const FInputActionValue& InputActionValue);
+
+	
+	UPROPERTY()
 	FVector2D SwitchDirection = FVector2D::ZeroVector;
 	
 	void Input_AbilityPressed(FGameplayTag InputTag);

@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "AbilitySystem/Abilities/PlayerGameplayAbility_TargetLock.h"
+#include "AbilitySystem/Abilities/PlayerAbility_TargetLock.h"
 
 #include "AbilitySystemBlueprintLibrary.h"
 #include "EnhancedInputSubsystems.h"
@@ -20,7 +20,7 @@
 #include "Widgets/WarriorWidgetBase.h"
 #include "Kismet/KismetSystemLibrary.h"
 
-void UPlayerGameplayAbility_TargetLock::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
+void UPlayerAbility_TargetLock::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
                                                         const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
                                                         const FGameplayEventData* TriggerEventData)
 {
@@ -31,7 +31,7 @@ void UPlayerGameplayAbility_TargetLock::ActivateAbility(const FGameplayAbilitySp
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 }
 
-void UPlayerGameplayAbility_TargetLock::EndAbility(const FGameplayAbilitySpecHandle Handle,
+void UPlayerAbility_TargetLock::EndAbility(const FGameplayAbilitySpecHandle Handle,
 	const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
 	bool bReplicateEndAbility, bool bWasCancelled)
 {	
@@ -41,7 +41,7 @@ void UPlayerGameplayAbility_TargetLock::EndAbility(const FGameplayAbilitySpecHan
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 }
 
-void UPlayerGameplayAbility_TargetLock::TryLockOnTarget()
+void UPlayerAbility_TargetLock::TryLockOnTarget()
 {
 	FindOtherTarget();
 	if (CurrentNearestTarget == nullptr)
@@ -56,7 +56,7 @@ void UPlayerGameplayAbility_TargetLock::TryLockOnTarget()
 	
 }
 
-void UPlayerGameplayAbility_TargetLock::GetAvailableTargetsToLock()
+void UPlayerAbility_TargetLock::GetAvailableTargetsToLock()
 {
 	TArray<FHitResult> HitResults;
 	UKismetSystemLibrary::BoxTraceMultiForObjects(
@@ -87,12 +87,12 @@ void UPlayerGameplayAbility_TargetLock::GetAvailableTargetsToLock()
 	}
 }
 
-void UPlayerGameplayAbility_TargetLock::CancelTargetLockAbility()
+void UPlayerAbility_TargetLock::CancelTargetLockAbility()
 {
 	CancelAbility(GetCurrentAbilitySpecHandle(), GetCurrentActorInfo(), GetCurrentActivationInfo(), true);
 }
 
-void UPlayerGameplayAbility_TargetLock::CleanUp()
+void UPlayerAbility_TargetLock::CleanUp()
 {
 	FoundTargets.Empty();
 	CurrentNearestTarget = nullptr;
@@ -101,7 +101,7 @@ void UPlayerGameplayAbility_TargetLock::CleanUp()
 	WidgetSize = FVector2D::ZeroVector;
 }
 
-void UPlayerGameplayAbility_TargetLock::ResetCharacterWalkSpeed()
+void UPlayerAbility_TargetLock::ResetCharacterWalkSpeed()
 {
 	if (CachedMaxWalkSpeed > 0.f)
 	{
@@ -110,7 +110,7 @@ void UPlayerGameplayAbility_TargetLock::ResetCharacterWalkSpeed()
 	CachedMaxWalkSpeed = 0;
 }
 
-void UPlayerGameplayAbility_TargetLock::ResetMappingContext()
+void UPlayerAbility_TargetLock::ResetMappingContext()
 {
 	if (!GetWarriorPlayerControllerFromActorInfo()) return;
 	UEnhancedInputLocalPlayerSubsystem* Subsystem = GetWarriorPlayerControllerFromActorInfo()->GetLocalPlayer()->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
@@ -119,7 +119,7 @@ void UPlayerGameplayAbility_TargetLock::ResetMappingContext()
 	Subsystem->RemoveMappingContext(TargetLockMappingContext);
 }
 
-AActor* UPlayerGameplayAbility_TargetLock::FindNearestTarget(const TArray<AActor*>& FoundActors)
+AActor* UPlayerAbility_TargetLock::FindNearestTarget(const TArray<AActor*>& FoundActors)
 {
 	AActor* NearestTarget = UGameplayStatics::FindNearestActor(GetWarriorPlayerCharacterFromActorInfo()->GetActorLocation(),FoundActors, DetectionRange);
 	if (NearestTarget)
@@ -129,7 +129,7 @@ AActor* UPlayerGameplayAbility_TargetLock::FindNearestTarget(const TArray<AActor
 	return nullptr;
 }
 
-void UPlayerGameplayAbility_TargetLock::DrawLockWidget()
+void UPlayerAbility_TargetLock::DrawLockWidget()
 {
 	if (TargetLockWidget == nullptr)
 	{
@@ -140,7 +140,7 @@ void UPlayerGameplayAbility_TargetLock::DrawLockWidget()
 	}
 }
 
-void UPlayerGameplayAbility_TargetLock::SetTargetLockWidgetPosition()
+void UPlayerAbility_TargetLock::SetTargetLockWidgetPosition()
 {
 	if (!TargetLockWidget || !CurrentNearestTarget)
 	{
@@ -174,14 +174,14 @@ void UPlayerGameplayAbility_TargetLock::SetTargetLockWidgetPosition()
 	TargetLockWidget->SetPositionInViewport(ScreenLocation, false);
 }
 
-void UPlayerGameplayAbility_TargetLock::InitCharacterWalkSpeed()
+void UPlayerAbility_TargetLock::InitCharacterWalkSpeed()
 {
 	if (CurrentNearestTarget == nullptr) return;
 	CachedMaxWalkSpeed = GetWarriorPlayerCharacterFromActorInfo()->GetCharacterMovement()->MaxWalkSpeed;
 	GetWarriorPlayerCharacterFromActorInfo()->GetCharacterMovement()->MaxWalkSpeed = TargetLockWalkSpeed;
 }
 
-void UPlayerGameplayAbility_TargetLock::InitMappingContext()
+void UPlayerAbility_TargetLock::InitMappingContext()
 {
 	if (CurrentNearestTarget == nullptr) return;
 	UEnhancedInputLocalPlayerSubsystem* Subsystem = GetWarriorPlayerControllerFromActorInfo()->GetLocalPlayer()->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
@@ -190,7 +190,7 @@ void UPlayerGameplayAbility_TargetLock::InitMappingContext()
 	Subsystem->AddMappingContext(TargetLockMappingContext, 3);
 }
 
-void UPlayerGameplayAbility_TargetLock::GetAvailableActorsAroundTarget(TArray<AActor*>& ActorsOnRight,
+void UPlayerAbility_TargetLock::GetAvailableActorsAroundTarget(TArray<AActor*>& ActorsOnRight,
 	TArray<AActor*>& ActorsOnLeft, AActor* TargetActor)
 {
 	const FVector PlayerLocation = GetWarriorPlayerCharacterFromActorInfo()->GetActorLocation();
@@ -211,7 +211,7 @@ void UPlayerGameplayAbility_TargetLock::GetAvailableActorsAroundTarget(TArray<AA
 	}
 }
 
-void UPlayerGameplayAbility_TargetLock::FindOtherTarget()
+void UPlayerAbility_TargetLock::FindOtherTarget()
 {
 	CurrentNearestTarget = nullptr;
 	FoundTargets.Empty();
@@ -228,7 +228,7 @@ void UPlayerGameplayAbility_TargetLock::FindOtherTarget()
 	CurrentNearestTarget = FindNearestTarget(FoundTargets);
 }
 
-void UPlayerGameplayAbility_TargetLock::UpdateTargetLockWidgetPosition(float DeltaTime)
+void UPlayerAbility_TargetLock::UpdateTargetLockWidgetPosition(float DeltaTime)
 {
 	if (CurrentNearestTarget == nullptr || UWarriorFunctionLibrary::NativeDoesActorHasTag(GetWarriorPlayerCharacterFromActorInfo(),
 		WarriorGameplayTags::Shared_Status_Death))
@@ -265,7 +265,7 @@ void UPlayerGameplayAbility_TargetLock::UpdateTargetLockWidgetPosition(float Del
 	}
 }
 
-void UPlayerGameplayAbility_TargetLock::SwitchTarget(const FGameplayTag& SwitchTag)
+void UPlayerAbility_TargetLock::SwitchTarget(const FGameplayTag& SwitchTag)
 {
 	if (bIsSwitched)
 	{
