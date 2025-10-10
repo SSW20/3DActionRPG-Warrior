@@ -40,8 +40,6 @@ protected:
 
 	//~ Begin IPawnUIInterface.
 	virtual UPawnUIComponent* GetPawnUIComponent() const override;
-
-	virtual UPlayerUIComponent* GetPlayerUIComponent() const override;
 	//~ End IPawnUIInterface
 private:
 #pragma region Components
@@ -82,5 +80,5 @@ private:
 
 public:
 	FORCEINLINE UPlayerCombatComponent* GetPlayerCombatComponent() const { return PlayerCombatComponent; }
-	
+	virtual UPlayerUIComponent* GetPlayerUIComponent() const {return PlayerUIComponent;}
 };

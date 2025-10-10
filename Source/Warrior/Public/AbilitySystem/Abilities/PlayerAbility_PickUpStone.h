@@ -24,7 +24,7 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void SearchStones();
-	
+
 	UFUNCTION(BlueprintCallable)
 	void ConsumeStones();
 private:

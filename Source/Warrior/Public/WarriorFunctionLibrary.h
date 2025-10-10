@@ -42,7 +42,7 @@ public:
 	UFUNCTION(BlueprintPure)
 	static bool IsTargetHostile(APawn* OwningPawn, APawn* TargetPawn);
 
-	UFUNCTION(BlueprintPure, meta = (DisplayName = "Get Rolling Distance By Level"))
+	UFUNCTION(BlueprintPure)
 	static float GetScalableFloatByLevel(const FScalableFloat& RollingDistance, const float Level);
 
 	UFUNCTION(BlueprintCallable)

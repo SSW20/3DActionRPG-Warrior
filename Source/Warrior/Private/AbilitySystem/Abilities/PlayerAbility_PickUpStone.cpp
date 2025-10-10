@@ -4,6 +4,7 @@
 #include "AbilitySystem/Abilities/PlayerAbility_PickUpStone.h"
 
 #include "Characters/WarriorPlayerCharacter.h"
+#include "Components/UI/PlayerUIComponent.h"
 #include "Items/PickUp/WarriorStoneBase.h"
 #include "Kismet/KismetSystemLibrary.h"
 
@@ -11,6 +12,7 @@ void UPlayerAbility_PickUpStone::ActivateAbility(const FGameplayAbilitySpecHandl
                                                  const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
                                                  const FGameplayEventData* TriggerEventData)
 {
+	GetPlayerUIComponentFromActorInfo()->OnInputAbilityActivated.Broadcast(true);
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 }
 
@@ -18,6 +20,7 @@ void UPlayerAbility_PickUpStone::EndAbility(const FGameplayAbilitySpecHandle Han
 	const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
 	bool bReplicateEndAbility, bool bWasCancelled)
 {
+	GetPlayerUIComponentFromActorInfo()->OnInputAbilityActivated.Broadcast(false);
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 }
 

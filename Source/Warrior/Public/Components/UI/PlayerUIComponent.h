@@ -14,6 +14,7 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWeaponIconChanged, TSoftObjectPtr<UTexture2D>, WeaponIcon);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnSpecialAbilityChanged, TSoftObjectPtr<UMaterialInterface>, AbilityMaterial, FGameplayTag, InputTag);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnAbilityCoolDownChanged, FGameplayTag, InputTag, float, TotalTime, float, RemainTime);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInputAbilityActivated, bool, bActivate);
 
 
 UCLASS()
@@ -32,4 +33,7 @@ public:
 
 	UPROPERTY(BlueprintAssignable, BlueprintCallable)
 	FOnAbilityCoolDownChanged OnAbilityCoolDownChanged;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable)
+	FOnInputAbilityActivated OnInputAbilityActivated;
 };

@@ -97,17 +97,12 @@ void AWarriorPlayerCharacter::PossessedBy(AController* NewController)
 
 UPawnCombatComponent* AWarriorPlayerCharacter::GetPawnCombatComponent() const
 {
-	return PlayerCombatComponent;
+	return GetPlayerCombatComponent();
 }
 
 UPawnUIComponent* AWarriorPlayerCharacter::GetPawnUIComponent() const
 {
-	return PlayerUIComponent;
-}
-
-UPlayerUIComponent* AWarriorPlayerCharacter::GetPlayerUIComponent() const
-{
-	return PlayerUIComponent;
+	return GetPlayerUIComponent();
 }
 
 void AWarriorPlayerCharacter::Input_Move(const FInputActionValue& InputActionValue)

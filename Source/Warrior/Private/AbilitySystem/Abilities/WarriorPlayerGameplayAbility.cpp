@@ -31,8 +31,13 @@ UPlayerCombatComponent* UWarriorPlayerGameplayAbility::GetPlayerCombatComponentF
 	return GetWarriorPlayerCharacterFromActorInfo()->GetPlayerCombatComponent();
 }
 
+UPlayerUIComponent* UWarriorPlayerGameplayAbility::GetPlayerUIComponentFromActorInfo()
+{
+	return GetWarriorPlayerCharacterFromActorInfo()->GetPlayerUIComponent();
+}
+
 FGameplayEffectSpecHandle UWarriorPlayerGameplayAbility::MakePlayerEffectSpecHandle(TSubclassOf<UGameplayEffect> InEffectClass,
-	float InWeaponBaseDamage, FGameplayTag InCurrentAttackTypeTag, int32 InCurrentComboCount)
+                                                                                    float InWeaponBaseDamage, FGameplayTag InCurrentAttackTypeTag, int32 InCurrentComboCount)
 {
 	UWarriorAbilitySystemComponent* WarriorASC = GetWarriorAbilitySystemComponent();
 	if (WarriorASC)

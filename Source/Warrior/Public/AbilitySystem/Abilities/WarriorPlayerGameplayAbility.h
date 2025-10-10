@@ -6,6 +6,7 @@
 #include "AbilitySystem/Abilities/WarriorGameplayAbility.h"
 #include "WarriorPlayerGameplayAbility.generated.h"
 
+class UPlayerUIComponent;
 class UPlayerCombatComponent;
 class AWarriorPlayerController;
 class AWarriorPlayerCharacter;
@@ -27,6 +28,9 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Warrior|Ability")
 	UPlayerCombatComponent* GetPlayerCombatComponentFromActorInfo();
+
+	UFUNCTION(BlueprintPure, Category = "Warrior|Ability")
+	UPlayerUIComponent* GetPlayerUIComponentFromActorInfo();
 
 	UFUNCTION(BlueprintPure, Category = "Warrior|Ability")
 	FGameplayEffectSpecHandle MakePlayerEffectSpecHandle(TSubclassOf<UGameplayEffect> InEffectClass,
