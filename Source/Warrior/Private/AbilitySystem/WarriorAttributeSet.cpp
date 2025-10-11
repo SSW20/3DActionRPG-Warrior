@@ -42,14 +42,13 @@ void UWarriorAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCal
 	
 	if (Data.EvaluatedData.Attribute == GetCurrentRageAttribute())
 	{
-		float LocalRage = GetCurrentRage();
 		SetCurrentRage(FMath::Clamp(GetCurrentRage(), 0.f, GetMaxRage()));
 
-		if (LocalRage == GetMaxRage())
+		if (GetCurrentRage() == GetMaxRage())
 		{
 			UWarriorFunctionLibrary::AddGameplayTagToActorIfNone(GetOwningActor(), WarriorGameplayTags::Player_Status_Rage_Full);
 		}
-		else if (LocalRage == 0.f)
+		else if (GetCurrentRage() == 0.f)
 		{
 			UWarriorFunctionLibrary::AddGameplayTagToActorIfNone(GetOwningActor(), WarriorGameplayTags::Player_Status_Rage_None);
 		}
