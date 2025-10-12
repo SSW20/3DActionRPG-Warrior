@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
+#include "WarriorGameInstance.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "WarriorTypes/WarriorEnumTypes.h"
 #include "WarriorFunctionLibrary.generated.h"
@@ -59,4 +60,10 @@ public:
 		ExpandEnumAsExecs = "CountDownInput|CountDownOutput", TotalTime = "1.0", UpdateInterval = "0.1"))
 	static void CountDown(const UObject* WorldContextObject, float TotalTime, float UpdateInterval, float& OutRemainingTime,
 		EWarriorCountDownActionInput CountDownInput, EWarriorCountDownActionOutput& CountDownOutput, FLatentActionInfo LatentInfo);
+
+	UFUNCTION(BlueprintPure, meta = (WorldContext= "WorldContextObject"))
+	static UWarriorGameInstance* GetWarriorGameInstance(const UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintCallable, meta = (WorldContext= "WorldContextObject"))
+	static void SetWarriorInputMode(const UObject* WorldContextObject, EWarriorInputMode InputMode);
 };

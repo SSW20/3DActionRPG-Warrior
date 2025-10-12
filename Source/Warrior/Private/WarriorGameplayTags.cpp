@@ -106,4 +106,8 @@ namespace WarriorGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(Enemy_Status_UnderAttack,"Enemy.Status.UnderAttack")
 	UE_DEFINE_GAMEPLAY_TAG(Enemy_Status_UnBlockable,"Enemy.Status.UnBlockable")
 
+	/* Map tag */
+	UE_DEFINE_GAMEPLAY_TAG(GameMode_Map_Survival,"GameMode.Map.Survival")
+	UE_DEFINE_GAMEPLAY_TAG(GameMode_Map_MainMenu,"GameMode.Map.MainMenu")
+
 }

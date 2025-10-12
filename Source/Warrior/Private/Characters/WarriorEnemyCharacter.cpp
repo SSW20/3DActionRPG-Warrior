@@ -12,7 +12,10 @@
 #include "DataAssets/StartUpData/WarriorStartUpDataBase.h"
 #include "Engine/AssetManager.h"
 #include "GameFrameWork/CharacterMovementComponent.h"
+#include "Gamemodes/WarriorGameModeBase.h"
 #include "Widgets/WarriorWidgetBase.h"
+
+class AWarriorGameModeBase;
 
 AWarriorEnemyCharacter::AWarriorEnemyCharacter()
 {
@@ -120,7 +123,32 @@ void AWarriorEnemyCharacter::InitAbiliities()
 			{
 				if (UWarriorStartUpDataBase* StartupData = CharacterStartUpData.Get())
 				{
-					StartupData->GiveToAbilitySystemComponent(GetWarriorAbilitySystemComponent(), 1);
+					int32 EnemyAbilityLevel = 1;
+
+				if (AWarriorGameModeBase* GameMode = GetWorld()->GetAuthGameMode<AWarriorGameModeBase>())
+				{
+					switch (GameMode->GetCurrentGameDifficulty())
+					{
+					case EWarriorGameModeDifficulty::Easy:
+						EnemyAbilityLevel = 1;
+						break;
+
+					case EWarriorGameModeDifficulty::Normal:
+						EnemyAbilityLevel = 2;
+						break;
+
+					case EWarriorGameModeDifficulty::Hard:
+						EnemyAbilityLevel = 3;
+						break;
+
+					case EWarriorGameModeDifficulty::VeryHard:
+						EnemyAbilityLevel = 4;
+						break;
+					default:
+						break;
+					}
+				}
+					StartupData->GiveToAbilitySystemComponent(GetWarriorAbilitySystemComponent(), EnemyAbilityLevel);
 				}
 			}));
 }

@@ -3,7 +3,9 @@
 
 #include "WarriorTypes/WarriorCountDownActor.h"
 
+#include "WarriorDebugHelper.h"
 #include "Algo/Count.h"
+#include "Kismet/GameplayStatics.h"
 #include "WarriorTypes/WarriorEnumTypes.h"
 
 void FWarriorCountDownAction::CancelAction()
@@ -13,6 +15,13 @@ void FWarriorCountDownAction::CancelAction()
 
 void FWarriorCountDownAction::UpdateOperation(FLatentResponse& Response)
 {
+	if (UGameplayStatics::IsGamePaused(CallbackTarget.Get()))
+	{
+		// 일시 정지 상태라면 아무 작업도 하지 않고 리턴합니다.
+		// ElapsedTimeSinceStart나 ElapsedInterval을 업데이트하지 않습니다.
+		return;
+	}
+	
 	if (bNeedCancel)
 	{
 		CountDownOutput = EWarriorCountDownActionOutput::Cancelled;
@@ -34,16 +43,16 @@ void FWarriorCountDownAction::UpdateOperation(FLatentResponse& Response)
 	}
 	else
 	{
-		// 실제 업데이트 반복
-		ElapsedTimeSinceStart += UpdateInterval > 0.f ? UpdateInterval : Response.ElapsedTime();
+			// 실제 업데이트 반복
+			ElapsedTimeSinceStart += UpdateInterval > 0.f ? UpdateInterval : Response.ElapsedTime();
 		
-		OutRemainingTime = TotalCountDownTime - ElapsedTimeSinceStart;
+			OutRemainingTime = TotalCountDownTime - ElapsedTimeSinceStart;
 
-		CountDownOutput = EWarriorCountDownActionOutput::Updated;
+			CountDownOutput = EWarriorCountDownActionOutput::Updated;
 
-		Response.TriggerLink(ExecutionFunction, OutputLink, CallbackTarget);
+			Response.TriggerLink(ExecutionFunction, OutputLink, CallbackTarget);
 
-		ElapsedInterval = 0.f;
+			ElapsedInterval = 0.f;
 	}
 	
 }

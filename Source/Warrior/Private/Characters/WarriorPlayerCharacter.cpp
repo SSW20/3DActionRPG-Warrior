@@ -17,6 +17,8 @@
 #include "Components/UI/PlayerUIComponent.h"
 #include "DataAssets/Input/WarriorInputConfig.h"
 #include "DataAssets/StartUpData/WarriorStartUpDataBase.h"
+#include "Gamemodes/WarriorGameModeBase.h"
+#include "WarriorTypes/WarriorEnumTypes.h"
 
 AWarriorPlayerCharacter::AWarriorPlayerCharacter()
 {
@@ -90,7 +92,33 @@ void AWarriorPlayerCharacter::PossessedBy(AController* NewController)
 		// 동기적 로딩 
 		if (UWarriorStartUpDataBase* LoadData = CharacterStartUpData.LoadSynchronous())
 		{
-			LoadData->GiveToAbilitySystemComponent(WarriorAbilitySystemComponent);
+			int32 PlayerAbilityLevel = 1;
+
+			if (AWarriorGameModeBase* GameMode = GetWorld()->GetAuthGameMode<AWarriorGameModeBase>())
+			{
+				switch (GameMode->GetCurrentGameDifficulty())
+				{
+				case EWarriorGameModeDifficulty::Easy:
+					PlayerAbilityLevel = 4;
+					break;
+
+				case EWarriorGameModeDifficulty::Normal:
+					PlayerAbilityLevel = 3;
+					break;
+
+				case EWarriorGameModeDifficulty::Hard:
+					PlayerAbilityLevel = 2;
+					break;
+
+				case EWarriorGameModeDifficulty::VeryHard:
+					PlayerAbilityLevel = 1;
+					break;
+				default:
+					break;
+				}
+			}
+			
+			LoadData->GiveToAbilitySystemComponent(WarriorAbilitySystemComponent, PlayerAbilityLevel);
 		}
 	}
 }

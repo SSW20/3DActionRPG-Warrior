@@ -12,6 +12,7 @@
 #include "Interfaces/PawnCombatInterface.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "WarriorTypes/WarriorCountDownActor.h"
+#include "WarriorGameInstance.h"
 
 UWarriorAbilitySystemComponent* UWarriorFunctionLibrary::GetWarriorAbilitySystemComponentFromActor(AActor* InActor)
 {
@@ -177,3 +178,49 @@ void UWarriorFunctionLibrary::CountDown(const UObject* WorldContextObject, float
 		}
 	}
 }
+
+UWarriorGameInstance* UWarriorFunctionLibrary::GetWarriorGameInstance(const UObject* WorldContextObject)
+{
+	if (GEngine)
+	{
+		if (UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject,EGetWorldErrorMode::LogAndReturnNull))
+		{
+			return World->GetGameInstance<UWarriorGameInstance>();
+		}
+	}
+	return nullptr;
+}
+
+void UWarriorFunctionLibrary::SetWarriorInputMode(const UObject* WorldContextObject, EWarriorInputMode InputMode)
+{
+	APlayerController* PlayerController = nullptr;
+	
+	if (GEngine)
+	{
+		if (UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject,EGetWorldErrorMode::LogAndReturnNull))
+		{
+			PlayerController = World->GetFirstPlayerController();
+		}
+	}
+
+	if (!PlayerController)
+	{
+		return;
+	}
+
+	switch (InputMode)
+	{
+	case EWarriorInputMode::GameOnly:
+		PlayerController->SetInputMode(FInputModeGameOnly());
+		PlayerController->bShowMouseCursor = false;
+		break;
+	case EWarriorInputMode::UIOnly:
+		PlayerController->SetInputMode(FInputModeUIOnly());
+		PlayerController->bShowMouseCursor = true;
+		break;
+	default:
+		break;
+		
+	}
+}
+
