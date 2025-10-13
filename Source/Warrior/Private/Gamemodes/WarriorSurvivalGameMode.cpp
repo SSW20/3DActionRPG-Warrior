@@ -4,6 +4,7 @@
 #include "Gamemodes/WarriorSurvivalGameMode.h"
 
 #include "NavigationSystem.h"
+#include "WarriorFunctionLibrary.h"
 #include "Characters/WarriorEnemyCharacter.h"
 #include "Engine/AssetManager.h"
 #include "Engine/TargetPoint.h"
@@ -76,6 +77,17 @@ void AWarriorSurvivalGameMode::Tick(float DeltaSeconds)
 				PreLoadEnemies();
 			}
 		}
+	}
+}
+
+void AWarriorSurvivalGameMode::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)
+{
+	Super::InitGame(MapName, Options, ErrorMessage);
+
+	EWarriorGameModeDifficulty Difficulty;
+	if (UWarriorFunctionLibrary::LoadCurrentGameModeDifficulty(Difficulty))
+	{
+		CurrentGameDifficulty = Difficulty;
 	}
 }
 

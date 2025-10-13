@@ -10,7 +10,7 @@ class FWarriorCountDownAction : public FPendingLatentAction
 {
 public:
 	FWarriorCountDownAction(float InTotalCountTime,float InUpdateInterval,float& InOutRemainingTime,EWarriorCountDownActionOutput& InCountDownOutput,
-		const FLatentActionInfo& LatentInfo)
+		const FLatentActionInfo& LatentInfo, bool bReverse)
 	: bNeedCancel(false)
 	, TotalCountDownTime(InTotalCountTime)
 	, UpdateInterval(InUpdateInterval)
@@ -21,6 +21,7 @@ public:
 	, CallbackTarget(LatentInfo.CallbackTarget)
 	, ElapsedInterval(0.f)
 	, ElapsedTimeSinceStart(0.f)
+	, bReverse(bReverse)
 	{}
 	void CancelAction();
 
@@ -36,4 +37,5 @@ private:
 	FWeakObjectPtr CallbackTarget;
 	float ElapsedInterval;
 	float ElapsedTimeSinceStart;
+	bool bReverse;
 };

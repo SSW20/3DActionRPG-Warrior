@@ -59,11 +59,17 @@ public:
 	UFUNCTION(BlueprintCallable, meta =(Latent, WorldContext="WorldContextObject", LatentInfo="LatentInfo",
 		ExpandEnumAsExecs = "CountDownInput|CountDownOutput", TotalTime = "1.0", UpdateInterval = "0.1"))
 	static void CountDown(const UObject* WorldContextObject, float TotalTime, float UpdateInterval, float& OutRemainingTime,
-		EWarriorCountDownActionInput CountDownInput, EWarriorCountDownActionOutput& CountDownOutput, FLatentActionInfo LatentInfo);
+		EWarriorCountDownActionInput CountDownInput, EWarriorCountDownActionOutput& CountDownOutput, FLatentActionInfo LatentInfo, bool bReverse);
 
 	UFUNCTION(BlueprintPure, meta = (WorldContext= "WorldContextObject"))
 	static UWarriorGameInstance* GetWarriorGameInstance(const UObject* WorldContextObject);
 
 	UFUNCTION(BlueprintCallable, meta = (WorldContext= "WorldContextObject"))
 	static void SetWarriorInputMode(const UObject* WorldContextObject, EWarriorInputMode InputMode);
+
+	UFUNCTION(BlueprintCallable)
+	static void SaveCurrentGameModeDifficulty(EWarriorGameModeDifficulty Difficulty);
+
+	UFUNCTION(BlueprintCallable)
+	static bool LoadCurrentGameModeDifficulty(EWarriorGameModeDifficulty& OutDifficulty);
 };

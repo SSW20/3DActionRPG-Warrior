@@ -10,6 +10,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "WarriorGameplayTags.h"
+#include "WarriorSaveGame.h"
 #include "AbilitySystem/WarriorAbilitySystemComponent.h"
 
 #include "Components/Combat/PlayerCombatComponent.h"
@@ -18,6 +19,7 @@
 #include "DataAssets/Input/WarriorInputConfig.h"
 #include "DataAssets/StartUpData/WarriorStartUpDataBase.h"
 #include "Gamemodes/WarriorGameModeBase.h"
+#include "Kismet/GameplayStatics.h"
 #include "WarriorTypes/WarriorEnumTypes.h"
 
 AWarriorPlayerCharacter::AWarriorPlayerCharacter()
@@ -100,18 +102,22 @@ void AWarriorPlayerCharacter::PossessedBy(AController* NewController)
 				{
 				case EWarriorGameModeDifficulty::Easy:
 					PlayerAbilityLevel = 4;
+					Debug::Print(TEXT("Current Difficulty: Easy"));
 					break;
 
 				case EWarriorGameModeDifficulty::Normal:
 					PlayerAbilityLevel = 3;
+					Debug::Print(TEXT("Current Difficulty: N"));
 					break;
 
 				case EWarriorGameModeDifficulty::Hard:
 					PlayerAbilityLevel = 2;
+					Debug::Print(TEXT("Current Difficulty: H"));
 					break;
 
 				case EWarriorGameModeDifficulty::VeryHard:
 					PlayerAbilityLevel = 1;
+					Debug::Print(TEXT("Current Difficulty: VH"));
 					break;
 				default:
 					break;

@@ -117,5 +117,8 @@ namespace WarriorGameplayTags
 	WARRIOR_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameMode_Map_Survival)
 	WARRIOR_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameMode_Map_MainMenu)
 
+
+	WARRIOR_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameData_SaveGame_Slot_1);
+
 	
 }

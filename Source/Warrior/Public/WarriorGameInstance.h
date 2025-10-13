@@ -31,7 +31,15 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Map Info")
 	TArray<FWarriorMapInfo> MapInfos;
 
+	virtual void OnPreLoadMap(const FString& MapName);
+	virtual void OnDestinationWorldLoaded(UWorld* LoadedWorld);
+
+	// UUserWidget 클래스의 서브클래스 포인터를 담을 변수를 선언합니다.
+	UPROPERTY(EditDefaultsOnly, Category = "Loading Screen")
+	TSubclassOf<UUserWidget> CustomLoadingScreenWidgetClass; 
 public:
 	UFUNCTION(BlueprintPure)
 	TSoftObjectPtr<UWorld> GetMapByTag(FGameplayTag Tag) const;
+
+	virtual void Init() override;
 };

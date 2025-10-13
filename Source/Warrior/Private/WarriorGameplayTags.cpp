@@ -110,4 +110,6 @@ namespace WarriorGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(GameMode_Map_Survival,"GameMode.Map.Survival")
 	UE_DEFINE_GAMEPLAY_TAG(GameMode_Map_MainMenu,"GameMode.Map.MainMenu")
 
+	UE_DEFINE_GAMEPLAY_TAG(GameData_SaveGame_Slot_1,"GameData.SaveGame.Slot.1");
+
 }

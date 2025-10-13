@@ -13,6 +13,10 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "WarriorTypes/WarriorCountDownActor.h"
 #include "WarriorGameInstance.h"
+#include "WarriorSaveGame.h"
+#include "GameFramework/SaveGame.h"
+#include "Kismet/GameplayStatics.h"
+
 
 UWarriorAbilitySystemComponent* UWarriorFunctionLibrary::GetWarriorAbilitySystemComponentFromActor(AActor* InActor)
 {
@@ -142,7 +146,7 @@ bool UWarriorFunctionLibrary::ApplyEffectSpecHandleToActor(AActor* ThisActor, AA
 
 void UWarriorFunctionLibrary::CountDown(const UObject* WorldContextObject, float TotalTime, float UpdateInterval,
 	float& OutRemainingTime, EWarriorCountDownActionInput CountDownInput,
-	EWarriorCountDownActionOutput& CountDownOutput, FLatentActionInfo LatentInfo)
+	EWarriorCountDownActionOutput& CountDownOutput, FLatentActionInfo LatentInfo, bool bReverse)
 {
 	UWorld* World = nullptr;
 	if (GEngine)
@@ -166,7 +170,7 @@ void UWarriorFunctionLibrary::CountDown(const UObject* WorldContextObject, float
 			LatentActionManager.AddNewAction(
 				LatentInfo.CallbackTarget,
 				LatentInfo.UUID,
-				new FWarriorCountDownAction(TotalTime, UpdateInterval, OutRemainingTime, CountDownOutput, LatentInfo));
+				new FWarriorCountDownAction(TotalTime, UpdateInterval, OutRemainingTime, CountDownOutput, LatentInfo, bReverse));
 		}
 	}
 
@@ -222,5 +226,35 @@ void UWarriorFunctionLibrary::SetWarriorInputMode(const UObject* WorldContextObj
 		break;
 		
 	}
+}
+
+void UWarriorFunctionLibrary::SaveCurrentGameModeDifficulty(EWarriorGameModeDifficulty Difficulty)
+{
+	USaveGame* SaveGameObj = UGameplayStatics::CreateSaveGameObject(UWarriorSaveGame::StaticClass());
+
+	if (UWarriorSaveGame* WarriorSaveGame = Cast<UWarriorSaveGame>(SaveGameObj))
+	{
+		WarriorSaveGame->SavedCurrentGameDifficulty = Difficulty;
+		UGameplayStatics::SaveGameToSlot(WarriorSaveGame, WarriorGameplayTags::GameData_SaveGame_Slot_1.GetTag().ToString(), 0);
+	}
+}
+
+bool UWarriorFunctionLibrary::LoadCurrentGameModeDifficulty(EWarriorGameModeDifficulty& OutDifficulty)
+{
+	if (!UGameplayStatics::DoesSaveGameExist(WarriorGameplayTags::GameData_SaveGame_Slot_1.GetTag().ToString(), 0))
+	{
+		return false;
+	}
+
+	UWarriorSaveGame* WarriorSaveGame = Cast<UWarriorSaveGame>(
+		UGameplayStatics::LoadGameFromSlot(WarriorGameplayTags::GameData_SaveGame_Slot_1.GetTag().ToString(), 0));
+
+	if (WarriorSaveGame)
+	{
+		OutDifficulty = WarriorSaveGame->SavedCurrentGameDifficulty;
+		return true;
+	}
+	return false;
+
 }
 

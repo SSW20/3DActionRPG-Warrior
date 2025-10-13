@@ -43,16 +43,22 @@ void FWarriorCountDownAction::UpdateOperation(FLatentResponse& Response)
 	}
 	else
 	{
-			// 실제 업데이트 반복
-			ElapsedTimeSinceStart += UpdateInterval > 0.f ? UpdateInterval : Response.ElapsedTime();
-		
+		// 실제 업데이트 반복
+		ElapsedTimeSinceStart += UpdateInterval > 0.f ? UpdateInterval : Response.ElapsedTime();
+
+		if (bReverse)
+		{
+			OutRemainingTime = ElapsedTimeSinceStart;
+		}
+		else
+		{
 			OutRemainingTime = TotalCountDownTime - ElapsedTimeSinceStart;
+		}
 
-			CountDownOutput = EWarriorCountDownActionOutput::Updated;
+		CountDownOutput = EWarriorCountDownActionOutput::Updated;
 
-			Response.TriggerLink(ExecutionFunction, OutputLink, CallbackTarget);
+		Response.TriggerLink(ExecutionFunction, OutputLink, CallbackTarget);
 
-			ElapsedInterval = 0.f;
+		ElapsedInterval = 0.f;
 	}
-	
 }
